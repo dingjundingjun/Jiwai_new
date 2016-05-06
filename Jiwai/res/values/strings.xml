@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Jiwai</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="tip_ok">确定</string>
+    <string name="tip_cancle">取消</string>
+    <string name="tip_title">温馨提示</string>
+</resources>

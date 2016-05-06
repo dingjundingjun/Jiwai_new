@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.org.great.world.Views.TitleScroolView
+        android:id="@+id/titlescrool"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/seeworld_title_height"
+        android:background="@color/catalog_bottom_tab_button_bg"/>
+    <com.org.great.world.Views.FragmentViewPaper
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:persistentDrawingCache="animation"/>
+</LinearLayout>

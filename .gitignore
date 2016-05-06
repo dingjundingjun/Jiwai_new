@@ -6,4 +6,7 @@
 /build
 /bin/*
 /gen/*
-
+/Jiwai/bin/*
+/Jiwai/gen/*
+/library/bin/*
+/library/gen/*
