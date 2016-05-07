@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
         <com.sounuo.jiwai.views.TabView
-            android:id="@+id/btn_great_world"
+            android:id="@+id/btn_read"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/catalog_bottom_tab_button_bg"

@@ -3,6 +3,8 @@ package com.sounuo.jiwai;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sounuo.jiwai.fragments.ReadFragment;
+import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.TabView;
 
 
@@ -23,66 +25,67 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
     private ReadFragment mReadFragment;
     /**个人设置fragment*/
 //    private SettingFragment mMeFragment;
-    private TabView mFindBtn;
+    private TabView mReadBtn;
     private TabView mMeBtn;
     private TabView mCommunionBtn;
     private List<TabView> mTabViewList = new ArrayList<TabView>();
     private FragmentManager mFragmentManager = null;
     private FragmentTransaction mTransaction = null;
     private int mFrontFragment = -1;
-    private final int GREAT_WORLD = 0;
+    private final int READ = 0;
     private final int ME = 1;
     private final int COMMU = 2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.catalog_main);
+		init();
 	}
 	
 	private void init() {
         mFragmentManager = this.getSupportFragmentManager();
-        mFindBtn = (TabView) findViewById(R.id.btn_great_world);
+        mReadBtn = (TabView) findViewById(R.id.btn_read);
         mMeBtn = (TabView) findViewById(R.id.btn_me);
         mCommunionBtn = (TabView)findViewById(R.id.btn_communion);
         
-        mFindBtn.setOnClickListener(this);
+        mReadBtn.setOnClickListener(this);
         mMeBtn.setOnClickListener(this);
         mCommunionBtn.setOnClickListener(this);
         
-        mTabViewList.add(mFindBtn);
+        mTabViewList.add(mReadBtn);
         mTabViewList.add(mMeBtn);
         mTabViewList.add(mCommunionBtn);
         setDefaultFragment();
     }
 	
 	private void setDefaultFragment() {
-        mFrontFragment = GREAT_WORLD;
+        mFrontFragment = READ;
         changeFragment();
     }
 
     private void changeFragment() {
         mTransaction = mFragmentManager.beginTransaction();
-        if (mFrontFragment == GREAT_WORLD) {
+        if (mFrontFragment == READ) {
             if (mReadFragment == null) {
             	mReadFragment = new ReadFragment();
             }
-            mTransaction.replace(R.id.content, mGreatWorldFragment);
-            mGreatWorldBtn.setSelected(true);
+            mTransaction.replace(R.id.content, mReadFragment);
+            mReadBtn.setSelected(true);
         } else if (mFrontFragment == ME) {
-            if (mMeFragment == null) {
-                mMeFragment = new SettingFragment();
-            }
-            mTransaction.replace(R.id.content, mMeFragment);
-            mMeBtn.setSelected(true);
+//            if (mMeFragment == null) {
+//                mMeFragment = new SettingFragment();
+//            }
+//            mTransaction.replace(R.id.content, mMeFragment);
+//            mMeBtn.setSelected(true);
         }
         else if(mFrontFragment == COMMU)
         {
-        	if(Util.getLogined(this) == false)
-        	{
-        		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
-        		return;
-        	}
-            mCommunionBtn.setSelected(true);
+//        	if(Util.getLogined(this) == false)
+//        	{
+//        		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+//        		return;
+//        	}
+//            mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();
     }
@@ -90,14 +93,7 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        LoginUtils.getInstance(this); 
-        Util.createDB(this);
         checkWifi();
-//        if(mAdView != null)
-//		{
-//        	mAdView.removeAllViews();
-//			mAdView.addView(AllAD.getGDTBannerView(this));
-//		}
     }
 
     private void checkWifi()
@@ -124,38 +120,19 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.btn_great_world: {
-                if (mFrontFragment != GREAT_WORLD) {
-                    mFrontFragment = GREAT_WORLD;
+            case R.id.btn_read: {
+                if (mFrontFragment != READ) {
+                    mFrontFragment = READ;
                     changeFragment();
                 }
                 break;
             }
             case R.id.btn_me: {
-                if (mFrontFragment != ME) {
-                    mFrontFragment = ME;
-                    changeFragment();
-                }
                 break;
             }
             case R.id.btn_communion:
             {
-            	if(Util.getLogined(this) == false)
-            	{
-            		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
-            		if (mFrontFragment != ME) {
-                        mFrontFragment = ME;
-                        changeFragment();
-                        changeTabViewStatus(R.id.btn_me);
-                        return;
-                    }
-            		return;
-            	}
-            	if (mFrontFragment != COMMU) {
-                    mFrontFragment = COMMU;
-                }
-            	enterCommunity();
-            	return;
+            	break;
             }
         }
         changeTabViewStatus(id);
@@ -169,14 +146,6 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
         }
     }
     
-    private void enterCommunity()
-    {
-		Intent intent = new Intent(this, com.umeng.community.example.MainActivity.class);
-		intent.putExtra("username", PersonalUtil.mSnsAccount.getUserName());
-		intent.putExtra("userid", PersonalUtil.mSnsAccount.getUsid());
-		startActivity(intent);
-    }
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

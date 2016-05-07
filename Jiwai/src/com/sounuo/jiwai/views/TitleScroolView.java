@@ -3,6 +3,7 @@ package com.sounuo.jiwai.views;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -50,7 +51,6 @@ public class TitleScroolView extends LinearLayout{
         mColorPress = mContext.getResources().getColor(R.color.title_scrool_text_color_press);
         mParentView = View.inflate(mContext, R.layout.title_scroll_layout, null);
         mContentLayout = (LinearLayout)mParentView.findViewById(R.id.content_layout);
-        initTitle();
         this.addView(mParentView);
     }
 
@@ -62,9 +62,10 @@ public class TitleScroolView extends LinearLayout{
     public void setTitleList(List<String> list)
     {
         mTitleList = list;
+        updateTitle();
     }
 
-    private void initTitle()
+    private void updateTitle()
     {
         if(mTitleList == null || mTitleList.size() <= 0)
         {
@@ -76,9 +77,10 @@ public class TitleScroolView extends LinearLayout{
         int textViewMinWidth = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_min_width);
         for(int i = 0; i < len;i++)
         {
-            Debug.d("title = " + mTitleList.get(i));
+        	
+            Debug.d("title = " + mTitleList.get(i) + " textsize = " + mTextSize);
             TextView textView = new TextView(mContext);
-            textView.setTextSize(mTextSize);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
             textView.setText(mTitleList.get(i));
             textView.setMinWidth(textViewMinWidth);
             textView.setGravity(Gravity.CENTER);
@@ -96,7 +98,7 @@ public class TitleScroolView extends LinearLayout{
                             TextView tempView = mTitleViewList.get(j);
                             if(tempView.getId() != id)
                             {
-                                tempView.setTextSize(mTextSize);
+                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
                                 tempView.setTextColor(mColorNormal);
                                 if(((Integer)tempView.getTag()) == LABEL_STATUS_PRESS)
                                 {
@@ -111,7 +113,7 @@ public class TitleScroolView extends LinearLayout{
                             else 
                             {
                                 mOnTitleClickListener.onClick(id);
-                                tempView.setTextSize(mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
+                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                                 tempView.setTextColor(mColorPress);
                                 Animation am;
                                 am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -138,7 +140,7 @@ public class TitleScroolView extends LinearLayout{
             for (int j = 0; j < mTitleViewList.size(); j++) {
                 TextView tempView = mTitleViewList.get(j);
                 if (tempView.getId() != id) {
-                    tempView.setTextSize(mTextSize);
+                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
                     tempView.setTextColor(mColorNormal);
                     if (((Integer) tempView.getTag()) == LABEL_STATUS_PRESS) {
                         Animation am = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -148,7 +150,7 @@ public class TitleScroolView extends LinearLayout{
                         tempView.setTag(LABEL_STATUS_NORMAL);
                     }
                 } else {
-                    tempView.setTextSize(mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
+                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                     tempView.setTextColor(mColorPress);
                     Animation am = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     am.setFillAfter(true);
