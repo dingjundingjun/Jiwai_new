@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="check_icon" format="reference" />
+    <attr name="check_color" format="color" />
+    <attr name="text_color" format="color" />
+    <attr name="text" format="string" />
+    <attr name="text_size" format="dimension" />
+    <attr name="check_alpha" format="integer" />
+
+    <declare-styleable name="ChangeColorIconView">
+        <attr name="check_icon" />
+        <attr name="check_color" />
+        <attr name="text" />
+        <attr name="text_size" />
+        <attr name="text_color" />
+        <attr name="check_alpha" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+</resources>

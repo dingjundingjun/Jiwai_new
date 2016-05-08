@@ -3,4 +3,21 @@
     <color name="catalog_bottom_tab_button_bg">#ffd5d5d5</color>
     <color name="title_scrool_text_color_normal">#ff000000</color>
     <color name="title_scrool_text_color_press">#ffff0000</color>
+    
+    
+    
+    <!--杏黄色-->
+    <color name="apricot_yellow">#FFA631</color>
+    <!--豆绿色-->
+    <color name="pea_green">#9ed046</color>
+    <!--橘红色-->
+    <color name="reddish_orange">#FF7500</color>
+    <!--月白-->
+    <color name="bluish_white">#d6ecf0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="line_color">#E5E8EA</color>
+    <color name="text_color">#d8d8d8</color>
+    <color name="text_color1">#4D4E52</color>
+    <color name="text_color2">#95989c</color>
 </resources>

@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jw="http://schemas.android.com/apk/res/com.sounuo.jiwai"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.sounuo.jiwai.views.ChangeColorTextView
+        android:id="@+id/column_info_tv"
+        android:layout_width="@dimen/DIMEN_350PX"
+        android:layout_height="@dimen/DIMEN_250PX"
+        android:layout_weight="1"
+        android:padding="5dp"
+        jw:check_alpha="255"
+        jw:check_color="@color/apricot_yellow"
+        jw:check_icon="@drawable/icon_column_item"
+        jw:text_color="@color/white"
+        jw:text_size="@dimen/text_size_42"/>
+
+</RelativeLayout>

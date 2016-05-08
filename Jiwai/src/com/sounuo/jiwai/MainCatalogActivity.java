@@ -2,24 +2,19 @@ package com.sounuo.jiwai;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.sounuo.jiwai.fragments.ReadFragment;
-import com.sounuo.jiwai.utils.Util;
-import com.sounuo.jiwai.views.TabView;
-
-
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import com.sounuo.jiwai.fragments.ReadFragment;
+import com.sounuo.jiwai.utils.Util;
+import com.sounuo.jiwai.views.TabView;
 
+@SuppressLint("NewApi")
 public class MainCatalogActivity extends FragmentActivity implements View.OnClickListener {
 	/**发现fragment*/
     private ReadFragment mReadFragment;

@@ -9,4 +9,17 @@
     <string name="tip_cancle">取消</string>
     <string name="tip_title">温馨提示</string>
     <string name="please_connect_network">请先连接网络!</string>
+    
+    
+    
+    <string name="downloaded_path">叽歪</string>
+    <string name="sd_card_no_existed">USB存储设备关闭后，才能使用此功能喔</string>
+
+
+    <string name="default_user_name">我的名字不庸俗</string>
+    <string name="recommend_str">推荐关注以下栏目</string>
+    <string name="enter_great_world">进入新奇葩</string>
+    <string name="named_by_yourself">给你自己取个名字吧</string>
+    
+    <string name="skip">Skip</string>
 </resources>
