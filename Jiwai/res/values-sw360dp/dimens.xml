@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- title scrool label text -->
     <dimen name="title_scrool_label_text_size">18sp</dimen>
     <dimen name="title_scrool_label_text_press_size">20sp</dimen>
-
-
-
     <dimen name="seeworld_title_height">70dp</dimen>
     <dimen name="title_scrool_label_text_view_height">50dip</dimen>
     <dimen name="title_scrool_label_text_min_width">90dip</dimen>
+	
+    <!-- read item layout -->
+	<dimen name="read_list_item_padding">20dip</dimen>
+	<dimen name="read_list_item_text_size">15sp</dimen>
+	<dimen name="read_list_brief_text_size">12sp</dimen>
 
-
-
+	<dimen name="loading_text_size">25sp</dimen>
+	
     <dimen name="mdialog_margin_bothsides">13dp</dimen>
     <dimen name="mdialog_margin_bottom">5dp</dimen>
     <dimen name="mdialog_width">282.08dp</dimen>

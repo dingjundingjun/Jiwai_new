@@ -130,11 +130,18 @@ public class ReadFragment extends Fragment{
 		} else {
 			ReadTitleData seeWorld = new ReadTitleData();
 			seeWorld.setTitle("看世界");
-			seeWorld.setUri("http://121.40.93.89:13090/article/getWatchWorldList");
+			seeWorld.setUrl("http://121.40.93.89:13090/article/getWatchWorldList");
+			ReadBaseFragment seeWorldFragment = new ReadBaseFragment();
+			seeWorldFragment.setReadTitleData(seeWorld);
+			mFragmentList.add(seeWorldFragment);
 			
 			ReadTitleData joke = new ReadTitleData();
 			joke.setTitle("笑一校");
-			joke.setUri("http://121.40.93.89:13090/article/getJokeList");
+			joke.setUrl("http://121.40.93.89:13090/article/getJokeList");
+			ReadBaseFragment jokeFragment = new ReadBaseFragment();
+			jokeFragment.setReadTitleData(joke);
+			mFragmentList.add(jokeFragment);
+			
 			mTitleListStr.clear();
 	        mTitleListStr.add(seeWorld.getTitle());
 	        mTitleListStr.add(joke.getTitle());
