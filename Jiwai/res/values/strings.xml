@@ -9,8 +9,18 @@
     <string name="tip_cancle">取消</string>
     <string name="tip_title">温馨提示</string>
     <string name="please_connect_network">请先连接网络!</string>
-    
-    
+    <!-- comment -->
+    <string name="comment_string">评论</string>
+    <string name="comment_dialog_title">评论</string>
+    <string name="comment_can_not_null">评论不能为空</string>
+    <string name="comment_sending">正在发表评论...</string>
+    <!-- find content  -->
+    <string name="i_like">赞</string>
+    <string name="share_string">分享</string>
+    <string name="user_comment_string">用户评论</string>
+    <string name="like_show">赞(%1$d)</string>
+    <string name="more_comments">更多评论</string>
+    <string name="no_more_comment">没有更多评论了</string>
     
     <string name="downloaded_path">叽歪</string>
     <string name="sd_card_no_existed">USB存储设备关闭后，才能使用此功能喔</string>

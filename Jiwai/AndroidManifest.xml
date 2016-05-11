@@ -17,6 +17,18 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/JiwaiBaseTheme" >
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56458a1467e58ea56b0009d5" >
+        </meta-data>
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="WanDouJia" />
+        <!--<meta-data android:name="client_id" android:value="85umcobwswozr4r6"/>-->
+        <!--<meta-data android:name="client_secret" android:value="794849f847e468dd503f8f3f7d84c01d"/>-->
+        <meta-data android:name="client_id" android:value="7960cf1cd1ea53a4"/>
+        <meta-data android:name="client_secret" android:value="9b188a23e3e610e0b853e37144e7086b"/>
         <activity
             android:name="com.sounuo.jiwai.MainActivity"
             android:label="@string/app_name" >
@@ -43,6 +55,12 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.MonitoredActivity" >
         </activity>
+        
+        <activity
+            android:name="com.sounuo.jiwai.ReadActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        
     </application>
 
 </manifest>

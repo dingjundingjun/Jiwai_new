@@ -56,7 +56,6 @@ public class CustomPresentationPagerFragment extends SimplePagerFragment {
     }
 
     //设置引导页背景色
-    @ColorInt
     @Override
     protected int getPageColor(int position) {
         if (position == 0) {

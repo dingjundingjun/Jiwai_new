@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/comment_parent_layout_padding_bottom"
+    >
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/comment_date_color"
+        android:textSize="@dimen/comment_data_text_size" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_marginLeft="@dimen/comment_name_textview_margin_left"
+        android:textColor="@color/comment_name_color"
+        android:textSize="@dimen/comment_name_text_size" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="@dimen/comment_content_textview_margin_top"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="@dimen/comment_content_textview_line_spacing"
+        android:layout_marginLeft="@dimen/comment_content_textview_margin_left"
+        android:textColor="@color/comment_content_color"
+        android:textSize="@dimen/comment_content_text_size" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/comment_item_avatar_width"
+        android:layout_height="@dimen/comment_item_avatar_height"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerInside"
+        />
+
+</RelativeLayout>

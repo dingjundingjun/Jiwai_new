@@ -22,4 +22,11 @@
     <color name="text_color2">#95989c</color>
     <color name="gray_normal">#666667</color>
     <color name="app_style_color">#fff25253</color>
+    <color name="comment_name_color">#919191</color>
+    <color name="comment_content_color">#4e4e4e</color>
+    <color name="comment_date_color">#919191</color>
+    <color name="like_text_color">#595959</color>
+    <color name="user_comment_background_color">#ff4a23</color>
+    <color name="user_comment_text_color">#ffff</color>
+    
 </resources>

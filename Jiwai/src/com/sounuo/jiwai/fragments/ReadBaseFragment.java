@@ -12,6 +12,7 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.sounuo.jiwai.MainCatalogActivity;
 import com.sounuo.jiwai.R;
+import com.sounuo.jiwai.ReadActivity;
 import com.sounuo.jiwai.adapter.ReadAdapter;
 import com.sounuo.jiwai.data.ReadBaseCatalogPojo;
 import com.sounuo.jiwai.data.ReadCatalogPojo;
@@ -116,7 +117,7 @@ public class ReadBaseFragment extends Fragment{
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("list", mCatalogPojo);
                 bundle.putInt("index_id",position);
-                Intent intent = new Intent(mBaseActivity, MainCatalogActivity.class);
+                Intent intent = new Intent(mBaseActivity, ReadActivity.class);
                 intent.putExtra("bundle",bundle);
                 startActivity(intent);
             }
