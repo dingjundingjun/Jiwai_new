@@ -3,6 +3,7 @@ package com.sounuo.jiwai.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -10,8 +11,12 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.adapter.ContentPaperAdapter;
+import com.sounuo.jiwai.data.ReadBaseCatalogPojo;
+import com.sounuo.jiwai.data.ReadCatalogPojo;
 import com.sounuo.jiwai.data.ReadTitleData;
+import com.sounuo.jiwai.data.ReadTitleDataPojo;
 import com.sounuo.jiwai.utils.Debug;
+import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.FragmentViewPaper;
 import com.sounuo.jiwai.views.TitleScroolView;
 
@@ -25,6 +30,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Created by dj on 2015/7/17.
@@ -32,7 +38,7 @@ import android.view.ViewGroup;
  */
 public class ReadFragment extends Fragment{
 	private final String TAG = "ReadFragment";
-	private boolean TEST = true;
+	private boolean TEST = false;
 	private View mParentView;
     public Activity mBaseActivity;
     public FragmentViewPaper mFragmentViewPaper;
@@ -106,7 +112,7 @@ public class ReadFragment extends Fragment{
 		if(!TEST) {
 		HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
-		http.send(HttpRequest.HttpMethod.GET, "http://www.baidu.com",
+		http.send(HttpRequest.HttpMethod.GET, "http://watchworld2.sounuo.net/classify/",
 		// params,
 				new RequestCallBack<String>() {
 					@Override
@@ -120,7 +126,27 @@ public class ReadFragment extends Fragment{
 
 					@Override
 					public void onSuccess(ResponseInfo<String> responseInfo) {
-						updateFragmentList();
+						String result = responseInfo.result;
+						Debug.d("result = " + result);
+						if(!Util.isEmpty(result))
+		                {
+		                    Gson gson = new Gson();
+		                    ReadTitleDataPojo pojo = gson.fromJson(result, ReadTitleDataPojo.class);
+		                    if(pojo.getStatus().equals("success"))
+		                    {
+		                        Debug.d("json = " + result);
+		                        ArrayList<ReadTitleData> tempList = pojo.getMessage();
+		                        if(tempList != null )
+		                        {
+		                        	for(int i = 0; i < tempList.size();i++) {
+		                			ReadBaseFragment fragment = new ReadBaseFragment();
+		                			fragment.setReadTitleData(tempList.get(i));
+		                			mFragmentList.add(fragment);
+		                			updateFragmentList();
+		                        	}
+		                        }
+		                    }
+		                }
 					}
 
 					@Override
