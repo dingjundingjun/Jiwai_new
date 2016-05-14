@@ -10,7 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+
 import com.sounuo.jiwai.fragments.ReadFragment;
+import com.sounuo.jiwai.fragments.MeFragment;
 import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.TabView;
 
@@ -19,7 +21,7 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
 	/**发现fragment*/
     private ReadFragment mReadFragment;
     /**个人设置fragment*/
-//    private SettingFragment mMeFragment;
+    private MeFragment mMeFragment;
     private TabView mReadBtn;
     private TabView mMeBtn;
     private TabView mCommunionBtn;
@@ -67,11 +69,11 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
             mTransaction.replace(R.id.content, mReadFragment);
             mReadBtn.setSelected(true);
         } else if (mFrontFragment == ME) {
-//            if (mMeFragment == null) {
-//                mMeFragment = new SettingFragment();
-//            }
-//            mTransaction.replace(R.id.content, mMeFragment);
-//            mMeBtn.setSelected(true);
+            if (mMeFragment == null) {
+                mMeFragment = new MeFragment();
+            }
+            mTransaction.replace(R.id.content, mMeFragment);
+            mMeBtn.setSelected(true);
         }
         else if(mFrontFragment == COMMU)
         {
@@ -123,6 +125,10 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
                 break;
             }
             case R.id.btn_me: {
+                if (mFrontFragment != ME) {
+                    mFrontFragment = ME;
+                    changeFragment();
+                }
                 break;
             }
             case R.id.btn_communion:

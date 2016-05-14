@@ -8,16 +8,17 @@ public class ColumnBean {
 //    需要获取栏目的标题
     private String title;
 //    大圆的背景颜色
-    private int bigColor;
+    private String url;
 //    是否选中
     private boolean isChecked;
 
 
-    public ColumnBean(String title,int bigColor,boolean isChecked){
-        this.bigColor=bigColor;
-        this.isChecked=isChecked;
-        this.title=title;
-    }
+	public ColumnBean(String title, boolean isChecked, String url) {
+		super();
+		this.title = title;
+		this.url = url;
+		this.isChecked = isChecked;
+	}
 
     public boolean isChecked() {
         return isChecked;
@@ -27,15 +28,16 @@ public class ColumnBean {
         this.isChecked = isChecked;
     }
 
-    public int getBigColor() {
-        return bigColor;
-    }
 
-    public void setBigColor(int bigColor) {
-        this.bigColor = bigColor;
-    }
+    public String getUrl() {
+		return url;
+	}
 
-    public String getTitle() {
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getTitle() {
         return title;
     }
 

@@ -2,7 +2,17 @@ package com.sounuo.jiwai.fragments;
 
 import java.util.ArrayList;
 
-import org.apache.http.Header;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
@@ -10,7 +20,6 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
-import com.sounuo.jiwai.MainCatalogActivity;
 import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.ReadActivity;
 import com.sounuo.jiwai.adapter.ReadAdapter;
@@ -23,19 +32,6 @@ import com.sounuo.jiwai.views.AutoListView;
 import com.sounuo.jiwai.views.AutoListView.OnRefreshListener;
 import com.sounuo.jiwai.views.Titanic;
 import com.sounuo.jiwai.views.TitanicTextView;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class ReadBaseFragment extends Fragment{
 	private ReadTitleData mReadTitleData;
