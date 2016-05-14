@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.sounuo.jiwai"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <GridView
+        android:id="@+id/me_pic_collection_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/me_select_tab"
+        android:layout_marginTop="@dimen/DIMEN_8PX"
+        android:numColumns="3" >
+    </GridView>
+
+    <ImageView
+        android:id="@+id/me_pic_collection_no_pic"
+        android:layout_width="@dimen/DIMEN_144PX"
+        android:layout_height="@dimen/DIMEN_144PX"
+        android:layout_centerInParent="true"
+        android:src="@drawable/s_2_1" />
+
+</RelativeLayout>
