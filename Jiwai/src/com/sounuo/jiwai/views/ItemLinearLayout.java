@@ -31,24 +31,24 @@ public class ItemLinearLayout extends LinearLayout {
 		itemNum = (TextView) inflate.findViewById(R.id.item_num);
 		itemIv = (ImageView) inflate.findViewById(R.id.item_iv);
         // 获取设置的图标
-		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ItemLinearLayout);
+		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.Item);
 		
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
 
             int attr = a.getIndex(i);
             switch (attr) {
-                case R.styleable.ItemLinearLayout_item_name_text:
+                case R.styleable.Item_item_name_text:
             		CharSequence nameText = a.getText(attr);
             		if (nameText != null)
             			itemName.setText(nameText);
                     break;
-                case R.styleable.ItemLinearLayout_item_num_text:
+                case R.styleable.Item_item_num_text:
             		CharSequence numText = a.getText(attr);
             		if (numText != null)
             			itemNum.setText(numText); 
                     break;
-                case R.styleable.ItemLinearLayout_item_select:
+                case R.styleable.Item_item_select:
                 	Boolean select = a.getBoolean(attr, false);
                 	if (select != null)
                 		itemIv.setSelected(select); 
