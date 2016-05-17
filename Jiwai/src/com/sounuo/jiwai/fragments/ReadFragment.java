@@ -38,7 +38,7 @@ import android.widget.Toast;
  */
 public class ReadFragment extends Fragment{
 	private final String TAG = "ReadFragment";
-	private boolean TEST = false;
+	private boolean TEST = true;
 	private View mParentView;
     public Activity mBaseActivity;
     public FragmentViewPaper mFragmentViewPaper;
