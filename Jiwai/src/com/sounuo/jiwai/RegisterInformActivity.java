@@ -21,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -56,7 +57,7 @@ public class RegisterInformActivity extends Activity implements
 
 	private ColumnAdapter mColumnAdapter;
 
-	private EditText EtNickName;
+	private TextView EtNickName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class RegisterInformActivity extends Activity implements
 
 	private void initviews() {
 		gridView = (GridView) findViewById(R.id.column_grid_view);
-		EtNickName = (EditText) findViewById(R.id.edit_text_nickname);
+		EtNickName = (TextView) findViewById(R.id.edit_text_nickname);
 		mPhotoView = (CircleImageView) findViewById(R.id.civ_user_head);
 		mEnterGreatWorld = (Button) findViewById(R.id.btn_enter_great_world);
 		mEnterGreatWorld.setOnClickListener(this);

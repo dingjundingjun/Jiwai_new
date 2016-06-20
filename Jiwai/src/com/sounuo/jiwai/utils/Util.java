@@ -36,6 +36,8 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Util 
 {
+	/**获取阅读的分类URL*/
+	public final static String READ_CATALOG_CALSSIFY_URL = "http://watchworld2.sounuo.net/classify/";
 	public static String gGroupId;
 	public static boolean B_XH = false;
 //	public static boolean IS_LOGINED = false;

@@ -8,7 +8,7 @@ public class ReadTitleData implements Serializable{
 	private int order_id;
 	private String title;
 	private String url;
-	private String ctype;
+	private String createtime;
 	public String getTitle() {
 		return title;
 	}
@@ -39,11 +39,11 @@ public class ReadTitleData implements Serializable{
 	public void setOrder_id(int order_id) {
 		this.order_id = order_id;
 	}
-	public String getCtype() {
-		return ctype;
+	public String getCreatetime() {
+		return createtime;
 	}
-	public void setCtype(String ctype) {
-		this.ctype = ctype;
+	public void setCreatetime(String createtime) {
+		this.createtime = createtime;
 	}
 	
 }

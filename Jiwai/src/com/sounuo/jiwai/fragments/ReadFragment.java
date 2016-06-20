@@ -38,7 +38,7 @@ import android.widget.Toast;
  */
 public class ReadFragment extends Fragment{
 	private final String TAG = "ReadFragment";
-	private boolean TEST = true;
+	private boolean TEST = false;
 	private View mParentView;
     public Activity mBaseActivity;
     public FragmentViewPaper mFragmentViewPaper;
@@ -112,7 +112,7 @@ public class ReadFragment extends Fragment{
 		if(!TEST) {
 		HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
-		http.send(HttpRequest.HttpMethod.GET, "http://watchworld2.sounuo.net/classify/",
+		http.send(HttpRequest.HttpMethod.GET, Util.READ_CATALOG_CALSSIFY_URL,
 		// params,
 				new RequestCallBack<String>() {
 					@Override
@@ -138,12 +138,14 @@ public class ReadFragment extends Fragment{
 		                        ArrayList<ReadTitleData> tempList = pojo.getMessage();
 		                        if(tempList != null )
 		                        {
+		                        	mTitleListStr.clear();
 		                        	for(int i = 0; i < tempList.size();i++) {
-		                			ReadBaseFragment fragment = new ReadBaseFragment();
-		                			fragment.setReadTitleData(tempList.get(i));
-		                			mFragmentList.add(fragment);
-		                			updateFragmentList();
+			                			ReadBaseFragment fragment = new ReadBaseFragment();
+			                			fragment.setReadTitleData(tempList.get(i));
+			                			mFragmentList.add(fragment);
+			                			mTitleListStr.add(fragment.getTitle());
 		                        	}
+		                        	updateFragmentList();
 		                        }
 		                    }
 		                }

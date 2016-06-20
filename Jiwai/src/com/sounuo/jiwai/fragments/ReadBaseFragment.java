@@ -32,7 +32,10 @@ import com.sounuo.jiwai.views.AutoListView;
 import com.sounuo.jiwai.views.AutoListView.OnRefreshListener;
 import com.sounuo.jiwai.views.Titanic;
 import com.sounuo.jiwai.views.TitanicTextView;
-
+/**
+ * 该类是每个分类的内容，比如（看世界、笑话）
+ * 
+ * */
 public class ReadBaseFragment extends Fragment{
 	private ReadTitleData mReadTitleData;
 	public ArrayList<ReadCatalogPojo> mCatalogPojo;
@@ -46,6 +49,7 @@ public class ReadBaseFragment extends Fragment{
     public RelativeLayout mMainLayout;
     protected String mCatalogUrl;
     public Button mReloadBtn;
+    private final int GET_CATALOG_NUM = 10;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mBaseActivity = getActivity();
@@ -62,10 +66,12 @@ public class ReadBaseFragment extends Fragment{
 
     public void setReadTitleData(ReadTitleData rtd) {
     	mReadTitleData = rtd;
+    	mTitle = mReadTitleData.getTitle();
     }
     
     public String getTitle()
     {
+    	Debug.d("getTitle = " + mTitle);
         return mTitle;
     }
 
@@ -155,6 +161,106 @@ public class ReadBaseFragment extends Fragment{
         mReloadBtn.setVisibility(View.VISIBLE);
     }
     
+    private int mergeList(ArrayList<ReadCatalogPojo> srcList,ArrayList<ReadCatalogPojo> sourceList) {
+    	int srcCount = srcList.size();
+    	int sourceCount = sourceList.size();
+    	int mergeNum = 0;
+    	boolean bAdd = true;
+    	for(int j = 0; j < sourceCount; j++) {
+    	    ReadCatalogPojo p = sourceList.get(j);
+    		for(int i = 0 ; i < srcCount; i++) {
+    		    ReadCatalogPojo srcPojo = sourceList.get(i);
+                if(srcPojo != null && p != null && srcPojo.getTitle() != null && p.getTitle() != null) {
+                	if(srcPojo.getTitle().equals(p.getTitle())) {
+                		bAdd = false;
+                		break;
+                	}
+                }
+          	}
+    		if(bAdd == false) {
+    			bAdd = true;
+    			continue;
+    		} else {
+    			srcList.add(p);
+    			mergeNum++;
+    		}
+    	}
+    	return mergeNum;
+    }
+    
+    private void getCatalogListFromHead() {
+    	if(mReadTitleData == null || mReadTitleData.getUrl().isEmpty())
+        {
+            return;
+        }
+        Debug.d("mReadTitleData = " + mReadTitleData.getUrl());
+        HttpUtils http = new HttpUtils();
+		http.configCurrentHttpCacheExpiry(1000 * 10);
+		String dataUrl = mReadTitleData.getUrl() + "/1/" + GET_CATALOG_NUM;
+		http.send(HttpRequest.HttpMethod.GET, mReadTitleData.getUrl(),
+				new RequestCallBack<String>() {
+					@Override
+					public void onStart() {
+						Debug.d("onStart");
+					}
+
+					@Override
+					public void onLoading(long total, long current,
+							boolean isUploading) {
+						Debug.d("onLoading");
+					}
+
+					@Override
+					public void onSuccess(ResponseInfo<String> responseInfo) {
+						String result = responseInfo.result;
+						if(!Util.isEmpty(result))
+		                {
+		                    Gson gson = new Gson();
+		                    ReadBaseCatalogPojo pojo = gson.fromJson(result, ReadBaseCatalogPojo.class);
+		                    if(pojo.getStatus().equals("success"))
+		                    {
+		                        Debug.d("json = " + result);
+		                        ArrayList<ReadCatalogPojo> tempList = pojo.getMessage();
+		                        if(tempList != null )
+		                        {
+		                        	
+		                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
+		                        	{
+		                        		Debug.d("there is no new news ");
+		                        		Toast.makeText(mBaseActivity, R.string.there_is_no_new_catalog_seeworld, Toast.LENGTH_SHORT).show();
+		                        	}
+		                        	else
+		                        	{
+		                        		mCatalogPojo = pojo.getMessage();
+		                                mAdapter.setList(mCatalogPojo);
+		                                mAutoListView.setAdapter(mAdapter);
+		                                mAdapter.notifyDataSetChanged();
+		                        	}
+//		                        	Util.saveFreshTime(mBaseActivity);
+//		                        	saveJson(arg2);
+		                        }
+		                        loadingComplete();
+		                    }
+		                }
+					}
+
+					@Override
+					public void onFailure(HttpException error, String msg) {
+						Debug.d("onLoading msg = " + msg);
+						loadingFailed();
+		                mAutoListView.setVisibility(View.GONE);
+		                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+					}
+				});
+    }
+    
+    private void getCatalogListFromFoot() {
+    	
+    }
+    
+    /**
+     * 根据分类ID，获取该分类的目录，每次获取固定的大小
+     */
     public void getCatalogListFromServer()
     {
         if(mReadTitleData == null || mReadTitleData.getUrl().isEmpty())
@@ -164,6 +270,7 @@ public class ReadBaseFragment extends Fragment{
         Debug.d("mReadTitleData = " + mReadTitleData.getUrl());
         HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
+		String dataUrl = mReadTitleData.getUrl() + "/1/1/10";
 		http.send(HttpRequest.HttpMethod.GET, mReadTitleData.getUrl(),
 				new RequestCallBack<String>() {
 					@Override
