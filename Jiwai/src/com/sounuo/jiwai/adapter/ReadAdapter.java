@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.data.ReadCatalogPojo;
+import com.sounuo.jiwai.utils.Debug;
 
 import java.io.File;
 import java.util.List;
@@ -68,7 +69,6 @@ public class ReadAdapter extends BaseAdapter
     	ViewHolder viewHolder;
         if(convertView != null) {
             viewHolder = (ViewHolder) convertView.getTag();
-
         } else {
             viewHolder = new ViewHolder();
             convertView = View.inflate(mContext, R.layout.read_list_item_layout, null);
@@ -80,14 +80,14 @@ public class ReadAdapter extends BaseAdapter
         }
         ReadCatalogPojo cp = mCatalogList.get(position);
         viewHolder.catalogText.setText(cp.getTitle());
-        String time = cp.getCreateTime();
+        String time = cp.getCreatetime();
+        Debug.d("time = " + time);
         time = time.substring(0, time.indexOf("T"));
 //        viewHolder.catalogTime.setText(cp.getCreateTime());
 //        viewHolder.catalogTime.setVisibility(View.GONE);
         viewHolder.catalogTime.setText(time);
-        viewHolder.catalogBrief.setText(cp.getBrief());
-        String pUrl = cp.getSnapshot();
-        
+//        viewHolder.catalogBrief.setText(cp.getBrief());
+        String pUrl = cp.getSnapshots();
         viewHolder.catalogPic.getLayoutParams().height = mDisplayWidth/4;
         if(pUrl != null)
         {

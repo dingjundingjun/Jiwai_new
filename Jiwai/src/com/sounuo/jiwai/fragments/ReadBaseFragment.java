@@ -111,7 +111,8 @@ public class ReadBaseFragment extends Fragment{
         });
         mAdapter = new ReadAdapter(getActivity());
         loading();
-        getCatalogListFromServer();
+//        getCatalogListFromServer();
+        getCatalogListFromHead();
         mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -196,8 +197,9 @@ public class ReadBaseFragment extends Fragment{
         Debug.d("mReadTitleData = " + mReadTitleData.getUrl());
         HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
-		String dataUrl = mReadTitleData.getUrl() + "/1/" + GET_CATALOG_NUM;
-		http.send(HttpRequest.HttpMethod.GET, mReadTitleData.getUrl(),
+		String dataUrl = mReadTitleData.getUrl() + "//1//" + GET_CATALOG_NUM;
+		Debug.d("dataUrl = " + dataUrl);
+		http.send(HttpRequest.HttpMethod.GET, dataUrl,
 				new RequestCallBack<String>() {
 					@Override
 					public void onStart() {
@@ -232,7 +234,8 @@ public class ReadBaseFragment extends Fragment{
 		                        	else
 		                        	{
 		                        		mCatalogPojo = pojo.getMessage();
-		                                mAdapter.setList(mCatalogPojo);
+		                        		Debug.d("mCatalogPojo size =  " + mCatalogPojo.size());
+		                        		mAdapter.setList(mCatalogPojo);
 		                                mAutoListView.setAdapter(mAdapter);
 		                                mAdapter.notifyDataSetChanged();
 		                        	}

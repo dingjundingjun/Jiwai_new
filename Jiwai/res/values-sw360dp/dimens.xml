@@ -11,7 +11,11 @@
 	<dimen name="read_list_item_padding">20dip</dimen>
 	<dimen name="read_list_item_text_size">15sp</dimen>
 	<dimen name="read_list_brief_text_size">12sp</dimen>
-
+	
+	<!-- read content layout -->
+	<dimen name="read_content_webview_margin_bottom">25dp</dimen>
+	
+	
 	<dimen name="loading_text_size">25sp</dimen>
 	<dimen name="commnet_dialog_layout_comment_edit_width">500dip</dimen>
     <dimen name="commnet_dialog_layout_comment_edit_height">350dip</dimen>
@@ -36,7 +40,7 @@
     <dimen name="comment_text_margin_right">20dip</dimen>
     <dimen name="share_text_margin_right">20dip</dimen>
     <dimen name="seeworld_layout_comment_text_size">12sp</dimen>
-    <dimen name="more_comment_text_size">15sp</dimen>
+    <dimen name="more_comment_text_size">10sp</dimen>
     
     <dimen name="mdialog_margin_bothsides">13dp</dimen>
     <dimen name="mdialog_margin_bottom">5dp</dimen>

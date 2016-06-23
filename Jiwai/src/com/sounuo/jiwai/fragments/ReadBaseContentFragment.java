@@ -56,13 +56,13 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
     private ProgressDialog mProgressDialog;
     private UMSocialService mSocialService;
     private List<UMComment> mComments;
-    private TextView mMoreComment;
+//    private TextView mMoreComment;
     private TextView mLikeTextView;
     private TextView mShareTextView;
     private TextView mUserCommentNumber;
     private TextView mCommentTextView;
-    private ListView mCommentList;
-    private CommentAdapter mCommentAdapter;
+//    private ListView mCommentList;
+//    private CommentAdapter mCommentAdapter;
     private CommentDialog mCommentDialog;
     private final int MORE_COMMENT_ID = 0;
     private int mLastCommentExpandNum = 0;
@@ -104,20 +104,22 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
 
     private void init()
     {
-        mMoreComment = initCommentListFoot();
+//        mMoreComment = initCommentListFoot();
         mShareTextView = (TextView) mParentView.findViewById(R.id.share);
         mLikeTextView = (TextView)mParentView.findViewById(R.id.like);
         mCommentTextView = (TextView)mParentView.findViewById(R.id.comment);
+        mWebView = (WebView)mParentView.findViewById(R.id.webview);
         mShareTextView.setOnClickListener(this);
         mLikeTextView.setOnClickListener(this);
         mCommentTextView.setOnClickListener(this);
+//        mCommentList = (ListView)mParentView.findViewById(R.id.comment_list);
         mUserCommentNumber = (TextView)mParentView.findViewById(R.id.user_comment_number);
-        mCommentList = (ListView)mParentView.findViewById(R.id.comment_list);
-        mCommentAdapter = new CommentAdapter(mBaseActivity);
-        mMoreComment.setOnClickListener(this);
-        mCommentList.addHeaderView(initCommentListHead());
-        mCommentList.addFooterView(mMoreComment);
-        mCommentList.setAdapter(mCommentAdapter);
+//        mCommentAdapter = new CommentAdapter(mBaseActivity);
+//        mMoreComment.setOnClickListener(this);
+//        mCommentList.addHeaderView(initCommentListHead());
+//        mCommentList.addFooterView(mMoreComment);
+//        mCommentList.setAdapter(mCommentAdapter);
+//        initCommentListHead();
         initWebView();
         initProgressDialog();
         addQQQZonePlatform();
@@ -222,12 +224,12 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
                         if (comments.size() > 0) {
                             mComments.addAll(comments);
                         } else if (comments.size() == 0) {
-                            mMoreComment.setVisibility(View.GONE);
+//                            mMoreComment.setVisibility(View.GONE);
                         }
                         updateComment(mComments);
                         mLastCommentExpandNum += comments.size();
                     } else {
-                        mMoreComment.setVisibility(View.GONE);
+//                        mMoreComment.setVisibility(View.GONE);
                         Toast.makeText(mBaseActivity, R.string.no_more_comment, Toast.LENGTH_SHORT).show();
                     }
                 } else if (status == -104) {
@@ -240,16 +242,18 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
     private void updateComment(List<UMComment> comments)
     {
         Debug.d("udpateComment comments.size = " + comments.size());
-        mCommentAdapter.setList(comments);
-        mCommentAdapter.notifyDataSetChanged();
+//        mCommentAdapter.setList(comments);
+//        mCommentAdapter.notifyDataSetChanged();
     }
 
     private void initComment()
     {
+//    	mCatalogPojo.setTitle("2016.02.22-你根本不了解的地球");
         mComments = new ArrayList<UMComment>();
         if (mSocialService == null) {
             Debug.d("getUMSocial name = " + "JJYY_" + mCatalogPojo.getTitle());
             mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
+//            mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
         }
         getCommentFromUM(-1);
         requestLike();
