@@ -29,7 +29,6 @@ import com.sounuo.jiwai.views.ItemLinearLayout;
 
 public class MeFragment extends Fragment implements OnClickListener{
 	
-	private ItemLinearLayout itemAttention;
 	private ItemLinearLayout itemPic;
 	private ItemLinearLayout itemCollection;
 	private GridView gvCollection;
@@ -39,12 +38,10 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private ImageView enterEdit;
     public List<Fragment> mFragmentList = new ArrayList<Fragment>();
     private int mFrontFragment = -1;
-    private final int ATTENTION = 0;
     private final int PIC = 1;
     private final int COLLECTION = 2;
     private FragmentManager mFragmentManager = null;
     private FragmentTransaction mTransaction = null;
-	private MeAttentionFragment mAttentionFragment;
 	private MeCollectionFragment mCollectionFragment;
 	private MePicFragment mPicFragment;
 	private FrameLayout frameContent;
@@ -71,17 +68,14 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		initViews(inflate);
 		
-		mAttentionFragment = new MeAttentionFragment();
 		mCollectionFragment = new MeCollectionFragment();
 		mPicFragment = new MePicFragment();
-		mFragmentList.add(mAttentionFragment);
 		mFragmentList.add(mCollectionFragment);
 		mFragmentList.add(mPicFragment);
 		
 		
 		setDefaultFragment();
 		
-		showAttentionNums();
 		
 		showPicNums();
 		
@@ -105,23 +99,15 @@ public class MeFragment extends Fragment implements OnClickListener{
 		itemPic.setItemNumText("11");
 	}
 
-	private void showAttentionNums() {
-		int attentSize = SharedPrefUtil.getInt(getActivity(),AppConstant.ATTENTION_SIZE, 0);
-		readTitleDatas = new ArrayList<ReadTitleData>();
-		itemAttention.setItemNumText(String.valueOf(attentSize));
-	}
 
 	private void initViews(View inflate) {
-		itemAttention = (ItemLinearLayout) inflate.findViewById(R.id.il_attention);
 		itemCollection = (ItemLinearLayout) inflate.findViewById(R.id.il_collection);
 		itemPic = (ItemLinearLayout) inflate.findViewById(R.id.il_pic);
 		enterEdit = (ImageView) inflate.findViewById(R.id.enter_edit);
 		frameContent = (FrameLayout) inflate.findViewById(R.id.frame_content);
-		itemAttention.setOnClickListener(this);
 		enterEdit.setOnClickListener(this);
 		itemCollection.setOnClickListener(this);
 		itemPic.setOnClickListener(this);
-        mItemList.add(itemAttention);
         mItemList.add(itemCollection);
         mItemList.add(itemPic);
 	}
@@ -130,13 +116,6 @@ public class MeFragment extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
-		case R.id.il_attention:
-			// 获取用户关注信息
-            if (mFrontFragment != ATTENTION) {
-                mFrontFragment = ATTENTION;
-                changeFragment();
-            }
-			break;
 		case R.id.il_pic:
 			// 获取收藏的照片信息
             if (mFrontFragment != PIC) {
@@ -163,19 +142,12 @@ public class MeFragment extends Fragment implements OnClickListener{
     private void changeFragment() {
         mTransaction = mFragmentManager.beginTransaction();
         if (mFrontFragment == COLLECTION) {
-//        	由于打开出现异常，将这部分关闭先，俊哥处理下
             if (mCollectionFragment == null) {
             	mCollectionFragment = new MeCollectionFragment();
             }
             mTransaction.replace(R.id.frame_content, mCollectionFragment);
 //            mReadBtn.setSelected(true);
-        } else if (mFrontFragment == ATTENTION) {
-            if (mAttentionFragment == null) {
-            	mAttentionFragment = new MeAttentionFragment();
-            }
-            mTransaction.replace(R.id.frame_content, mAttentionFragment);
-//            mMeBtn.setSelected(true);
-        }
+        } 
         else if(mFrontFragment == PIC)
         {
             if (mPicFragment == null) {

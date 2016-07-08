@@ -11,7 +11,7 @@ public class PersonalInfoPojo implements Serializable {
 	//	账户Id
     public String accountId;
     //	用户密码
-    public String password;
+    public String phone;
     //	昵称
     public String nickName;
     //	性别
@@ -21,14 +21,15 @@ public class PersonalInfoPojo implements Serializable {
     //	头像保存路径
     public String photoPath;
     //	收藏的图片
-
-	public String getPassword() {
-		return password;
+    
+    public String getPhone() {
+		return phone;
+	}
+    
+    public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public String getNickName() {
 		return nickName;
@@ -62,12 +63,24 @@ public class PersonalInfoPojo implements Serializable {
 		this.photoPath = photoPath;
 	}
 
+	public PersonalInfoPojo(String accountId, String phone, String nickName,
+			String sex, String grade, String photoPath) {
+		super();
+		this.accountId = accountId;
+		this.phone = phone;
+		this.nickName = nickName;
+		this.sex = sex;
+		this.grade = grade;
+		this.photoPath = photoPath;
+	}
+
 	@Override
 	public String toString() {
-		return "PersonalInfoPojo [password=" + password + ", nickName="
-				+ nickName + ", sex=" + sex + ", grade=" + grade
-				+ ", photoPath=" + photoPath + "]";
+		return "PersonalInfoPojo [accountId=" + accountId + ", phone=" + phone
+				+ ", nickName=" + nickName + ", sex=" + sex + ", grade="
+				+ grade + ", photoPath=" + photoPath + "]";
 	}
+
 
 
 }

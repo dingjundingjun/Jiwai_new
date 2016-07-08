@@ -43,7 +43,7 @@
         android:layout_below="@+id/tv_nick_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/DIMEN_28PX"
-        android:text="@string/default_user_introduce"
+        android:text="@string/default_introduce"
         android:textColor="@color/text_color2"
         android:textSize="@dimen/text_size_36" />
 
@@ -78,22 +78,6 @@
             android:layout_height="match_parent"
             app:item_name_text="@string/il_collection_text" />
 
-        <LinearLayout
-            android:layout_width="@dimen/DIMEN_6PX"
-            android:layout_height="match_parent"
-            android:gravity="bottom" >
-
-            <View
-                android:layout_width="@dimen/DIMEN_6PX"
-                android:layout_height="@dimen/DIMEN_100PX"
-                android:background="#ccd1d5" />
-        </LinearLayout>
-
-        <com.sounuo.jiwai.views.ItemLinearLayout
-            android:id="@+id/il_attention"
-            android:layout_width="@dimen/DIMEN_356PX"
-            android:layout_height="match_parent"
-            app:item_name_text="@string/il_attention_text" />
     </LinearLayout>
 
     <View

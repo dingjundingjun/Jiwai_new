@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:jw="http://schemas.android.com/apk/res/com.sounuo.jiwai"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.org.great.wrold.activity.RegisterInformActivity" >
+
+    <include
+        android:id="@+id/write_phone_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_218PX"
+        layout="@layout/title_item" />
+
+    <!-- 用户名信息 -->
+
+    <RelativeLayout
+        android:layout_width="@dimen/DIMEN_860PX"
+        android:layout_height="@dimen/DIMEN_450PX"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_240PX"
+        android:background="@drawable/regirster_code_false" >
+
+        <EditText
+            android:id="@+id/register_username_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:layout_marginTop="@dimen/DIMEN_44PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/register_username_hint"
+            android:maxLength="4" />
+
+        <View
+            android:id="@+id/rule_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_150PX"
+            android:background="@color/line_color_gray_light" />
+
+        <RelativeLayout
+            android:id="@+id/password_edit_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rule_line"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:layout_marginTop="@dimen/DIMEN_44PX" >
+
+            <EditText
+                android:id="@+id/register_password_et"
+                android:layout_width="@dimen/DIMEN_800PX"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/register_password_hint"
+                android:inputType="textPassword"
+                android:maxLength="12"
+                android:password="true" />
+
+            <CheckBox
+                android:id="@+id/register_show_password"
+                android:layout_width="@dimen/DIMEN_65PX"
+                android:layout_height="@dimen/DIMEN_65PX"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/DIMEN_40PX"
+                android:background="@drawable/register_eye_selector"
+                android:button="@null"
+                android:paddingTop="@dimen/DIMEN_58PX" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/rule_line2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_300PX"
+            android:background="@color/line_color_gray_light" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_150PX"
+            android:layout_below="@+id/rule_line2"
+            android:layout_marginLeft="@dimen/DIMEN_80PX" >
+
+            <EditText
+                android:id="@+id/register_ver_code_et"
+                android:layout_width="@dimen/DIMEN_800PX"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/register_ver_code_hint"
+                android:inputType="number"
+                android:maxLength="4" />
+
+            <Button
+                android:id="@+id/get_regirster_code"
+                android:layout_width="@dimen/DIMEN_320PX"
+                android:layout_height="@dimen/DIMEN_100PX"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="60秒后重发"
+                android:textColor="@color/text_hint"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="@dimen/DIMEN_510PX"
+        android:layout_height="@dimen/DIMEN_118PX"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_900PX"
+        android:background="@drawable/jiwai_btn"
+        android:text="下一步"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ProgressBar
+        android:id="@+id/login_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

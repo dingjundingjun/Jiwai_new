@@ -7,14 +7,13 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-
-    tools:context="com.org.great.wrold.activity.RegisterInformActivity">
+    tools:context="com.org.great.wrold.activity.RegisterInformActivity" >
 
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/DIMEN_130PX"
-        android:orientation="vertical">
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/tv_register_title"
@@ -44,33 +43,55 @@
         app:border_color="@color/apricot_yellow"
         app:border_width="@dimen/DIMEN_2PX" />
 
-    <TextView
-        android:id="@+id/named_by_yourself"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/enter_edit_base_info"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/DIMEN_442PX"
-        android:text="@string/named_by_yourself"
-        android:textColor="#BABEC6" />
-
-    <TextView
-        android:id="@+id/edit_text_nickname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/DIMEN_520PX"
-        android:background="@null"
         android:gravity="center_horizontal"
-        android:text="@string/default_user_name"
-        android:textColor="@color/text_color1"
-        android:textSize="@dimen/text_size_48" />
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/user_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_user_name"
+                android:textColor="#BABEC6" />
+
+            <ImageView
+                android:background="#ff00ff"
+                android:id="@+id/iv_enter_edit"
+                android:layout_width="@dimen/DIMEN_42PX"
+                android:layout_height="@dimen/DIMEN_34PX"
+                android:layout_marginLeft="@dimen/DIMEN_10PX"
+                android:layout_toRightOf="@+id/user_name_tv"
+                android:src="@drawable/myspace_edit_selector" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/introduce_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/DIMEN_40PX"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:singleLine="true"
+            android:text="@string/default_introduce"
+            android:textColor="@color/text_color1" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/DIMEN_4PX"
-        android:layout_below="@+id/edit_text_nickname"
+        android:layout_below="@+id/enter_edit_base_info"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/DIMEN_148PX"
@@ -91,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_bottom_bar"
-        android:layout_below="@+id/tv_recommend">
+        android:layout_below="@+id/tv_recommend" >
 
         <GridView
             android:id="@+id/column_grid_view"
@@ -101,28 +122,25 @@
             android:numColumns="4" />
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/rl_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/DIMEN_280PX"
-        android:layout_alignParentBottom="true"
-        >
+        android:layout_alignParentBottom="true" >
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/DIMEN_4PX"
-            android:background="@color/line_color"/>
+            android:background="@color/line_color" />
 
         <Button
             android:id="@+id/btn_enter_great_world"
-            android:layout_width="@dimen/DIMEN_480PX"
-            android:layout_height="@dimen/DIMEN_100PX"
+            android:layout_width="@dimen/DIMEN_530PX"
+            android:layout_height="@dimen/DIMEN_120PX"
             android:layout_centerInParent="true"
-            android:background="@drawable/icon_column_item"
+            android:background="@drawable/enter_jiwai"
             android:text="@string/enter_great_world"
-            android:textColor="#B0B0B0" />
+            android:textColor="@color/title" />
     </RelativeLayout>
-
 
 </RelativeLayout>

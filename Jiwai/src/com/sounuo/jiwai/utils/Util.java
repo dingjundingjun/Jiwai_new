@@ -5,22 +5,29 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-
-import com.sounuo.jiwai.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,12 +38,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-public class Util 
-{
-	/**获取阅读的分类URL*/
+import com.sounuo.jiwai.R;
+
+public class Util {
+	/** 获取阅读的分类URL */
 	public final static String READ_CATALOG_CALSSIFY_URL = "http://watchworld2.sounuo.net/classify/";
 	public static String gGroupId;
 	public static boolean B_XH = false;
@@ -45,6 +54,11 @@ public class Util
 	public static int REFRESH_TIME_INTERVAL = 1;
 	/**游戏时间间隔 （分）*/
 	public static int PLAY_GAME_INTERVAL = 30;
+	
+	public static String JSESSIONID = null;
+	public static String ERROR_RESULT = "0x110";
+	private static final int REQUEST_TIMEOUT = 5 * 1000;// 设置请求超时5秒钟
+	private static final int SO_TIMEOUT = 5 * 1000; // 设置等待数据超时时间5秒钟
 	/**更新聊天信息*/
 	public static int LOAD_USER_INFO_INTERVAL = 3;
 	public static boolean isMain = true;
@@ -189,6 +203,55 @@ public static byte[] readStream(InputStream inStream) throws Exception{
         }
         return true;
     }
+	
+	/**
+	 * 
+	 * @param url
+	 * @return string
+	 */
+	public static String request(List<NameValuePair> params, String url) {
+		String result = "";
+		try {
+			HttpPost httpRequest = new HttpPost(url);
+			if (params != null) {
+				HttpEntity httpEntity = new UrlEncodedFormEntity(params, HTTP.UTF_8);
+				httpRequest.setEntity(httpEntity);
+			}
+
+			DefaultHttpClient httpClient = getHttpClient();
+
+			httpRequest.setHeader("Cookie", "JSESSIONID=" + JSESSIONID);
+			HttpResponse httpResponse = httpClient.execute(httpRequest);
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				result = EntityUtils.toString(httpResponse.getEntity());
+				Log.i("commit", "提交成功");
+			} else {
+				result = ERROR_RESULT;
+				Log.i("commit", "提交失败");
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param params
+	 * @param url
+	 * @return
+	 */
+	public static DefaultHttpClient getHttpClient() {
+		BasicHttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, REQUEST_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);
+		DefaultHttpClient client = new DefaultHttpClient(httpParams);
+		return client;
+	}
 
     public static void showAlertDialog(Context context,String title,String msg)
     {

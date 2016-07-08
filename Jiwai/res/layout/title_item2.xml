@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/DIMEN_218PX" >
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="@dimen/DIMEN_132PX"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"
+        android:src="@drawable/back_btn" />
+
+    <TextView
+        android:id="@+id/activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/DIMEN_40PX"
+        android:layout_centerVertical="true"
+        android:text="编辑资料"
+        android:textColor="#464646"
+        android:textSize="@dimen/text_size_48" />
+
+    <TextView
+        android:id="@+id/btn_edit_finish"
+        android:layout_width="@dimen/DIMEN_132PX"
+        android:layout_height="@dimen/DIMEN_80PX"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/DIMEN_40PX"
+        android:layout_centerVertical="true"
+        android:onClick="onClick"
+        android:text="完成"
+        android:background="@drawable/regirster_code_false" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_1PX"
+        android:layout_alignParentBottom="true"
+        android:background="#464646" />
+
+</RelativeLayout>

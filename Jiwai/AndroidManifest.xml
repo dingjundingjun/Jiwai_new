@@ -14,6 +14,7 @@
         android:targetSdkVersion="21" />
 
     <application
+        android:name="com.sounuo.jiwai.JiWaiApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +23,6 @@
             android:name="UMENG_APPKEY"
             android:value="56458a1467e58ea56b0009d5" >
         </meta-data>
-
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="WanDouJia" />
@@ -37,23 +37,35 @@
         <activity
             android:name="com.sounuo.jiwai.guide.GuideActivity"
             android:theme="@style/AppTheme_GuideActivity" >
-
-            <!--
-                  <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+        </activity>
+        <activity
+            android:name="com.sounuo.jiwai.RegisterGetVerCodeActivity"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.sounuo.jiwai.RegisterInformActivity"
+            android:windowSoftInputMode="stateHidden"
+	    android:screenOrientation="portrait" >
+
+        </activity>
+        <activity
+            android:name="com.sounuo.jiwai.RegisterLoginActivity"
             android:label="@string/app_name"
+	    android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
-            <intent-filter>
+	                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.sounuo.jiwai.RegisterActivity"
+	android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name="com.sounuo.jiwai.ForgetPasswordActivity" >
+        </activity>
+        <activity android:name="com.sounuo.jiwai.CallBackPasswordActivity"
+	android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainCatalogActivity"
@@ -62,14 +74,12 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.MonitoredActivity" >
         </activity>
-        
         <activity
             android:name="com.sounuo.jiwai.ReadActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        <activity 
-            android:name="com.sounuo.jiwai.EditActivity"></activity>
-        
+        <activity android:name="com.sounuo.jiwai.EditActivity" >
+        </activity>
     </application>
 
 </manifest>

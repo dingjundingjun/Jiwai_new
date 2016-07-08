@@ -68,7 +68,8 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
             }
             mTransaction.replace(R.id.content, mReadFragment);
             mReadBtn.setSelected(true);
-        } else if (mFrontFragment == ME) {
+        }
+        else if (mFrontFragment == ME) {
             if (mMeFragment == null) {
                 mMeFragment = new MeFragment();
             }

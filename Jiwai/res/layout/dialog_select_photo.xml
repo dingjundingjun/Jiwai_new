@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/DIMEN_860PX"
+    android:layout_height="@dimen/DIMEN_544PX"
+    android:background="@drawable/regirster_code_false"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_180PX"
+        android:gravity="center"
+        android:text="请选择需要的操作" />
+
+    <View
+        android:id="@+id/rule_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_2PX"
+        android:layout_centerInParent="true"
+        android:background="@color/line_color_gray_light" />
+
+    <TextView
+        android:id="@+id/tv_my_camera_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_180PX"
+        android:gravity="center_vertical|left"
+        android:text="拍照" />
+
+    <View
+        android:id="@+id/rule_line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_2PX"
+        android:layout_centerInParent="true"
+        android:background="@color/line_color_gray_light" />
+
+    <TextView
+        android:id="@+id/tv_my_camera_from_album"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_180PX"
+        android:gravity="center_vertical|left"
+        android:text="从相册选择" />
+
+</LinearLayout>

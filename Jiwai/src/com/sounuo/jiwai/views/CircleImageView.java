@@ -4,6 +4,7 @@ package com.sounuo.jiwai.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -134,6 +135,11 @@ public class CircleImageView extends ImageView {
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
         }
+        
+        Bitmap bitmap=BitmapFactory.decodeResource(getResources(), R.drawable.ic_camera);
+        
+        //画上一个小相机
+        canvas.drawBitmap(bitmap, getWidth()-bitmap.getWidth(), getHeight()-bitmap.getHeight(), mBitmapPaint);
     }
     
     @Override

@@ -4,5 +4,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_size_large">28sp</dimen>
-
+    <dimen name="photo_action_popup_min_width">300dip</dimen>
 </resources>

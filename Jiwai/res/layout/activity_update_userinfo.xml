@@ -1,0 +1,145 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/write_phone_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/DIMEN_218PX"
+        layout="@layout/title_item2" />
+
+    <RelativeLayout
+        android:id="@+id/user_base_info"
+        android:layout_width="@dimen/DIMEN_860PX"
+        android:layout_height="@dimen/DIMEN_600PX"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_240PX"
+        android:background="@drawable/regirster_code_false" >
+
+        <EditText
+            android:id="@+id/update_username_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:layout_marginTop="@dimen/DIMEN_44PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/update_username_hint"
+            android:maxLength="20" />
+
+        <View
+            android:id="@+id/rule_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_150PX"
+            android:background="@color/line_color_gray_light" />
+
+        <EditText
+            android:id="@+id/update_introduce_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_150PX"
+            android:layout_below="@+id/rule_line"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:hint="@string/update_introduce_hint"
+            android:maxLength="128" />
+
+        <View
+            android:id="@+id/rule_line1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_300PX"
+            android:background="@color/line_color_gray_light" />
+
+        <EditText
+            android:id="@+id/update_grade_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rule_line1"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:layout_marginTop="@dimen/DIMEN_44PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/update_grade_hint"
+            android:maxLength="4" />
+
+        <View
+            android:id="@+id/rule_line2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_450PX"
+            android:background="@color/line_color_gray_light" />
+
+        <EditText
+            android:id="@+id/update_sex_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rule_line2"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:layout_marginTop="@dimen/DIMEN_44PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/update_sex_hint"
+            android:maxLength="4" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/DIMEN_860PX"
+        android:layout_height="@dimen/DIMEN_300PX"
+        android:layout_below="@+id/user_base_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_240PX"
+        android:background="@drawable/regirster_code_false" >
+
+        <TextView
+            android:id="@+id/update_email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_150PX"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:hint="@string/update_email_hint"
+            android:maxLength="128" />
+
+        <View
+            android:id="@+id/rule_line3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_150PX"
+            android:background="@color/line_color_gray_light" />
+
+        <TextView
+            android:id="@+id/update_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rule_line3"
+            android:layout_marginLeft="@dimen/DIMEN_80PX"
+            android:layout_marginRight="@dimen/DIMEN_80PX"
+            android:layout_marginTop="@dimen/DIMEN_44PX"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/update_phone_hint"
+            android:maxLength="4" />
+    </RelativeLayout>
+
+</RelativeLayout>

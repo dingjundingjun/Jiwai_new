@@ -27,4 +27,5 @@
         <attr name="item_name_text" format="string" />
         <attr name="item_select" format="boolean" />
     </declare-styleable>
+    
 </resources>
