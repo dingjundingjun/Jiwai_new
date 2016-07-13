@@ -1,6 +1,8 @@
 package com.sounuo.jiwai.data.db;
 
 
+import com.sounuo.jiwai.data.FavoriteInfoColumns;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,36 +40,47 @@ public class DatabaseJwHelper extends SQLiteOpenHelper{
 	}
 
 	public DatabaseJwHelper(Context context) {
-		this(context, PersonalInfoColums.DB_NAME,PersonalInfoColums.DB_VERSION);
+		this(context, FavoriteInfoColumns.DB_NAME,FavoriteInfoColumns.DB_VERSION);
 	}
 	
-	private static final String DB_PERSONINFO_CREATE = "CREATE TABLE "
-			+ PersonalInfoColums.TABLE_NAME + " (" 
-			+ PersonalInfoColums.ACCOUNT_ID+" INTEGER PRIMARY KEY,"
-			+ PersonalInfoColums.NICK_NAME+ " TEXT," 
-			+ PersonalInfoColums.PASSWORD + " TEXT,"
-			+ PersonalInfoColums.PHOTO_PATH+ " TEXT,"
-			+ PersonalInfoColums.SEX + " TEXT," 
-			+ PersonalInfoColums.GRADE + " TEXT " + ");"; 
+	
+	private static final String DB_CHANNEL_CREATE=" CREATE TABLE "
+			+ "channel (id integer primary key autoincrement,unistr text, app_en_name text,"
+			+ " isdefault integer, indexorder integer, mid integer, isdinyue integer,"
+			+ " url text, manage_img text, isedit text, name text,"
+			+ " show text, isrecommend integer);";
+
+	private static final String DB_FAVORITE_INFO_CREATE="CREATE TABLE "
+			+ FavoriteInfoColumns.TABLE_NAME+" ("
+			+ FavoriteInfoColumns.ID+" integer primary key autoincrement,"
+			+ FavoriteInfoColumns.TITLE+" text,"
+			+ FavoriteInfoColumns.USERNAME+"  text,"
+			+ FavoriteInfoColumns.DESCRIPTION+"  text,"
+			+ FavoriteInfoColumns.DOMAIN+"  text,"
+			+ FavoriteInfoColumns.URL+"  text,"
+			+ FavoriteInfoColumns.DATELINE+" text,"
+			+ FavoriteInfoColumns.SHARE+"  integer,"
+			+ FavoriteInfoColumns.COMMENT+"  integer,"
+			+ FavoriteInfoColumns.LIKE+"  integer );";
 	
 	
     //创建表
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL( DB_PERSONINFO_CREATE);
+        db.execSQL( DB_FAVORITE_INFO_CREATE);
     }
     
 	/** 升级数据库 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + PersonalInfoColums.TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + FavoriteInfoColumns.TABLE_NAME);
 		onCreate(db);
 	}
 	
 	// 更新个人信息数据库
 	public void personInfoTableRecreate(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE IF EXISTS " + PersonalInfoColums.TABLE_NAME);
-		db.execSQL(DB_PERSONINFO_CREATE);
+		db.execSQL("DROP TABLE IF EXISTS " + FavoriteInfoColumns.TABLE_NAME);
+		db.execSQL(DB_FAVORITE_INFO_CREATE);
 	}
 
 	public boolean tabIsExist(String tabName) {

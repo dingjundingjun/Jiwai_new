@@ -10,9 +10,13 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -21,11 +25,17 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -43,12 +53,13 @@ import com.sounuo.jiwai.utils.JsonTools;
 import com.sounuo.jiwai.utils.MD5;
 import com.sounuo.jiwai.utils.PersonalUtil;
 import com.sounuo.jiwai.utils.SharedPrefUtil;
+import com.sounuo.jiwai.utils.StatusBarUtil;
 import com.sounuo.jiwai.utils.Util;
 
 /**
  * 登录界面
  */
-public class RegisterLoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends Activity implements OnClickListener {
 
 	private Button mLoginBtn;
 	
@@ -92,11 +103,49 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 		mLoginBtn = (Button) findViewById(R.id.btn_login);
 		mLoginForgetTextView = (TextView) findViewById(R.id.login_forget_password);
 		mLoginRegisterTextView = (TextView) findViewById(R.id.login_register);
+		
+		
+        /*给TextView中文字设置下划线，颜色*/
+        SpannableString spannableString = new SpannableString("创建账号");
+        UnderlineSpan underlineSpan = new UnderlineSpan();
+        spannableString.setSpan(underlineSpan, 0, 4, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#FFA589"));
+        spannableString.setSpan(colorSpan, 0, 4, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        mLoginRegisterTextView.setText(spannableString);
+		
+		
 		mLoginProgressBar = (ProgressBar) findViewById(R.id.login_progressbar);
 		CommonUtil.setTextChangedListener(mLoginPasswordEditText,CommonUtil.ENGLISH_NUMBER);
 		mLoginBtn.setOnClickListener(this);
 		mLoginForgetTextView.setOnClickListener(this);
 		mLoginRegisterTextView.setOnClickListener(this);
+		mLoginPasswordEditText.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(keyCode == KeyEvent.KEYCODE_ENTER){  
+					//处理事件
+					toLogin();
+					return true;
+				}
+				return false;
+			}
+		});
+		
+		mLoginPhoneEditText.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(keyCode == KeyEvent.KEYCODE_ENTER){  
+					//处理事件
+					toLogin();
+					return true;
+				}
+				return false;
+			}
+		});
+		
+		
 		mLoginPasswordEditText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -145,6 +194,17 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 	}
 	
 	
+	
+	@Override
+	public void onAttachedToWindow() {
+		// TODO Auto-generated method stub
+		super.onAttachedToWindow();
+		setStatusBar();
+	}
+	
+    protected void setStatusBar() {
+            StatusBarUtil.setTranslucent(this, StatusBarUtil.DEFAULT_STATUS_BAR_ALPHA);
+    }
 	
 	private void checkIsFillAll() {
 
@@ -208,9 +268,14 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 	
 	private void showProgress(boolean show) {
 		if(show){
-			mLoginProgressBar.setVisibility(View.VISIBLE);
+//			mLoginProgressBar.setVisibility(View.VISIBLE);
+//			修改登录按钮状态，避免重复点击
+			mLoginBtn.setEnabled(false);
+			mLoginBtn.setText("登录中...");
 		}else{
-			mLoginProgressBar.setVisibility(View.GONE);
+//			mLoginProgressBar.setVisibility(View.GONE);
+			mLoginBtn.setEnabled(true);
+			mLoginBtn.setText("登录");
 		}
 	}
 
@@ -242,12 +307,12 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void toRegisterActivity() {
-		Intent intent = new Intent(RegisterLoginActivity.this,RegisterGetVerCodeActivity.class);
+		Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
 		startActivityForResult(intent, 0);
 	}
 
 	private void toForgetPwdActivity() {
-		Intent intent = new Intent(RegisterLoginActivity.this,CallBackPasswordActivity.class);
+		Intent intent = new Intent(LoginActivity.this,CallBackPasswordActivity.class);
 		intent.putExtra(AppConstant.EXTRA_PHONE_NUM, mLoginPhoneEditText.getText().toString().trim());
 		startActivityForResult(intent, 0);
 	}
@@ -271,12 +336,22 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 			params.add(new BasicNameValuePair("password", MD5.getMD5(password)));
 			params.add(new BasicNameValuePair("userName", name));
 			HttpPost httpPost = new HttpPost(AppConstant.LOGIN_URL);
+	        httpParams = new BasicHttpParams();  
+	        // 设置连接超时和 Socket 超时，以及 Socket 缓存大小  
+	        HttpConnectionParams.setConnectionTimeout(httpParams, 20 * 1000);  
+	        HttpConnectionParams.setSoTimeout(httpParams, 20 * 1000);  
+	        HttpConnectionParams.setSocketBufferSize(httpParams, 8192);  
+	        // 设置重定向，缺省为 true  
+	        HttpClientParams.setRedirecting(httpParams, true);  
+	        // 设置 user agent  
+	        String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2) Gecko/20100115 Firefox/3.6";  
+	        HttpProtocolParams.setUserAgent(httpParams, userAgent); 
 			Log.i("===========", params.toString());
 			HttpResponse httpResponse = null;
 			try {
 				// 设置httpPost请求参数
 				httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-				httpResponse = new DefaultHttpClient().execute(httpPost);
+				httpResponse = new DefaultHttpClient(httpParams).execute(httpPost);
 				int resultCode = httpResponse.getStatusLine().getStatusCode();
 				if (httpResponse.getStatusLine().getStatusCode() == 200) {
 					/* 读返回数据 */
@@ -285,11 +360,9 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 						Log.e("JIWAI", "JIWAII  ++++    空的");
 						return null;
 					}
-					String strResult = EntityUtils.toString(httpResponse.getEntity());
+					// 解决中文显示乱码问题
+					String strResult = EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8);
 					System.out.println("JIWAII  ++++   " + strResult);
-					Log.e("JIWAI", "JIWAII  ++++   " + strResult);
-//					JSONObject jsonObject = new JSONObject(strResult);
-//					return jsonObject.getString("code");
 					return strResult;
 				} else {
 					System.out.println("JIWAII  链接失败........."+ httpResponse.getStatusLine().getStatusCode());
@@ -309,7 +382,7 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(String strResult) {
 			showProgress(false);
 			if (strResult == null) {
-				doToast(RegisterLoginActivity.this, "网络异常", Toast.LENGTH_SHORT);
+				doToast(LoginActivity.this, "网络异常", Toast.LENGTH_SHORT);
 				return;
 			}
 			Log.e("JIWAI", "打印看看返回码   :  " + strResult);
@@ -323,14 +396,16 @@ public class RegisterLoginActivity extends Activity implements OnClickListener {
 					System.out.println("JIWAII  ++  登录成功！");
 					String data=jsonObject.getString("data");;
 					mPersonInfo = JsonTools.GsonToObj(data, PersonalInfoPojo.class);
-					PersonalUtil.savePersonInfo(RegisterLoginActivity.this, mPersonInfo);
-					doToast(RegisterLoginActivity.this, "登录成功！", Toast.LENGTH_SHORT);
-					ActivityHelper.enterRegisterInform(RegisterLoginActivity.this);
-					finish();
+					PersonalUtil.savePersonInfo(LoginActivity.this, mPersonInfo);
+					
+//					登录成功后应该将用户的登录密码用MD5保存，退出登录后返回再恢复
+					
+					doToast(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT);
+					ActivityHelper.enterMainActivity(LoginActivity.this);
 				} else {
 					System.out.println("JIWAII  ++   验证失败"+code);
 					Log.e(TAG, "onPostExecute 验证失败");
-					doToast(RegisterLoginActivity.this, "帐号密码不正确！", Toast.LENGTH_SHORT);
+					doToast(LoginActivity.this, "帐号密码不正确！", Toast.LENGTH_SHORT);
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

@@ -1,5 +1,8 @@
 package com.sounuo.jiwai;
 
+import com.sounuo.jiwai.utils.AppConstant;
+import com.sounuo.jiwai.utils.Util;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +18,15 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Util.AccoutRequest(null, AppConstant.UPDATE_TOKEN_EXPTIME, null);
+			}
+		}).start();
+//        进入到主界面的话，开异步线程
     }
     
     private void init() {

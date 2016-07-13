@@ -24,6 +24,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,21 +40,23 @@ import android.util.Log;
 
 public class UploadUtil {
 	private static UploadUtil uploadUtil;
-	
-	private static final String BOUNDARY =  UUID.randomUUID().toString(); // 边界标识 随机生成
-	
+
+	private static final String BOUNDARY = UUID.randomUUID().toString(); // 边界标识
+																			// 随机生成
+
 	private static final String PREFIX = "--";
-	
+
 	private static final String LINE_END = "\r\n";
-	
+
 	private static final String CONTENT_TYPE = "multipart/form-data"; // 内容类型
-	
+
 	private UploadUtil() {
 
 	}
 
 	/**
 	 * 单例模式获取上传工具类
+	 * 
 	 * @return
 	 */
 	public static UploadUtil getInstance() {
@@ -56,16 +67,16 @@ public class UploadUtil {
 	}
 
 	private static final String TAG = "UploadUtil";
-	
+
 	private int readTimeOut = 20 * 1000; // 读取超时
-	
+
 	private int connectTimeout = 20 * 1000; // 超时时间
-	
+
 	/***
 	 * 请求使用多长时间
 	 */
 	private static int requestTime = 0;
-	
+
 	private static final String CHARSET = "utf-8"; // 设置编码
 
 	/***
@@ -80,23 +91,27 @@ public class UploadUtil {
 	 * 服务器出错
 	 */
 	public static final int UPLOAD_SERVER_ERROR_CODE = 3;
-	
+
 	/**
-	 * android上传文件到服务器 
-	 * @param filePath 需要上传的文件的路径
-	 * @param fileKey 在网页上<input type=file name=xxx/> xxx就是这里的fileKey
-	 * @param RequestURL 请求的URL
+	 * android上传文件到服务器
+	 * 
+	 * @param filePath
+	 *            需要上传的文件的路径
+	 * @param fileKey
+	 *            在网页上<input type=file name=xxx/> xxx就是这里的fileKey
+	 * @param RequestURL
+	 *            请求的URL
 	 */
-	public void uploadFile(String filePath, String fileKey, String RequestURL,Map<String, String> param) {
+	public void uploadFile(String filePath, String fileKey, String RequestURL, Map<String, String> param) {
 		if (filePath == null) {
-			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
+			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE, "文件不存在");
 			return;
-		}
+		} 
 		try {
 			File file = new File(filePath);
 			uploadFile(file, fileKey, RequestURL, param);
 		} catch (Exception e) {
-			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
+			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE, "文件不存在");
 			e.printStackTrace();
 			return;
 		}
@@ -105,158 +120,110 @@ public class UploadUtil {
 	/**
 	 * android上传文件到服务器
 	 * 
-	 * @param file 需要上传的文件
-	 * @param fileKey 在网页上<input type=file name=xxx/> xxx就是这里的fileKey
-	 * @param RequestURL 请求的URL
+	 * @param file
+	 *            需要上传的文件
+	 * @param fileKey
+	 *            在网页上<input type=file name=xxx/> xxx就是这里的fileKey
+	 * @param RequestURL
+	 *            请求的URL
 	 */
-	public void uploadFile(final File file, final String fileKey, final String RequestURL, final Map<String, String> param) {
+	public void uploadFile(final File file, final String fileKey,
+			final String RequestURL, final Map<String, String> param) {
 		if (file == null || (!file.exists())) {
-			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
+			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE, "文件不存在");
 			return;
 		}
 
-		Log.i(TAG, "请求的URL=" + RequestURL);
-		Log.i(TAG, "请求的fileName=" + file.getName());
-		Log.i(TAG, "请求的fileKey=" + fileKey);
-		new Thread(new Runnable() {  //开启线程上传文件
-			@Override
-			public void run() {
-				toUploadFile(file, fileKey, RequestURL, param);
-			}
-		}).start();
-		
+		Log.e(TAG, "请求的URL=" + RequestURL);
+		Log.e(TAG, "请求的URL=" + param);
+		Log.e(TAG, "请求的fileName=" + file.getName());
+		Log.e(TAG, "请求的fileKey=" + fileKey);
+		new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						toUploadFile(file, fileKey, RequestURL, param);
+					}
+				}).start();
+
 	}
 
-	private void toUploadFile(File file, String fileKey, String RequestURL, Map<String, String> param) {
-		String result = null;
-		requestTime= 0;
-		
-		long requestTime = System.currentTimeMillis();
-		long responseTime = 0;
+	private void toUploadFile(File file, String fileKey, String RequestURL,
+			Map<String, String> param) {
 
-		try {
-			URL url = new URL(RequestURL);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setReadTimeout(readTimeOut);
-			conn.setConnectTimeout(connectTimeout);
-			conn.setDoInput(true); // 允许输入流
-			conn.setDoOutput(true); // 允许输出流
-			conn.setUseCaches(false); // 不允许使用缓存
-			conn.setRequestMethod("POST"); // 请求方式
-			conn.setRequestProperty("Charset", CHARSET); // 设置编码
-			conn.setRequestProperty("connection", "keep-alive");
-			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
-			conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
-//			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			
-			/**
-			 * 当文件不为空，把文件包装并且上传
-			 */
-			DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-			StringBuffer sb = null;
-			String params = "";
-			
-			/***
-			 * 以下是用于上传参数
-			 */
-			if (param != null && param.size() > 0) {
-				Iterator<String> it = param.keySet().iterator();
-				while (it.hasNext()) {
-					sb = null;
-					sb = new StringBuffer();
-					String key = it.next();
-					String value = param.get(key);
-					sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
-					sb.append("Content-Disposition: form-data; name=\"").append(key).append("\"").append(LINE_END).append(LINE_END);
-					sb.append(value).append(LINE_END);
-					params = sb.toString();
-					Log.i(TAG, key+"="+params+"##");
-					dos.write(params.getBytes());
-//					dos.flush();
-				}
-			}
-			
-			sb = null;
-			params = null;
-			sb = new StringBuffer();
-			/**
-			 * 这里重点注意： name里面的值为服务器端需要key 只有这个key 才可以得到对应的文件
-			 * filename是文件的名字，包含后缀名的 比如:abc.png
-			 */
-			if (file != null) {
-				sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
-				sb.append("Content-Disposition:form-data; name=\"" + fileKey + "\"; filename=\"" + file.getName() + "\"" + LINE_END);
-				sb.append("Content-Type:image/jpeg" + LINE_END); // 这里配置的Content-type很重要的 ，用于服务器端辨别文件的类型的
-				sb.append(LINE_END);
-				params = sb.toString();
-				sb = null;
+		RequestParams params = new RequestParams();
 
-				Log.i(TAG, file.getName() + "=" + params + "##");
-				dos.write(params.getBytes());
-				/** 上传文件 */
-				InputStream is = new FileInputStream(file);
-				Log.i(TAG, "##文件长度"+(file.length()/1024));
-				onUploadProcessListener.initUpload((int) file.length());
-				byte[] bytes = new byte[1024];
-				int len = 0;
-				int curLen = 0;
-				while ((len = is.read(bytes)) != -1) {
-					curLen += len;
-					dos.write(bytes, 0, len);
-					onUploadProcessListener.onUploadProcess(curLen);
-				}
-				is.close();
-
-				dos.write(LINE_END.getBytes());
-				byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END).getBytes();
-				dos.write(end_data);
-				dos.flush();
+		params.addBodyParameter(fileKey, file);
+		/***
+		 * 以下是用于上传参数
+		 */
+		if (param != null && param.size() > 0) {
+			Iterator<String> it = param.keySet().iterator();
+			while (it.hasNext()) {
+				String key = it.next();
+				String value = param.get(key);
+				params.addHeader(key, value);
 			}
-			/**
-			 * 获取响应码 200=成功 当响应成功，获取响应的流
-			 */
-			int res = conn.getResponseCode();
-			responseTime = System.currentTimeMillis();
-			this.requestTime = (int) ((responseTime-requestTime)/1000);
-			Log.e(TAG, "response code:" + res);
-			if (res == 200) {
-				Log.e(TAG, "request success");
-				InputStream input = conn.getInputStream();
-				StringBuffer sb1 = new StringBuffer();
-				int ss;
-				while ((ss = input.read()) != -1) {
-					sb1.append((char) ss);
-				}
-				result = sb1.toString();
-				Log.e(TAG, "result : " + result);
-				sendMessage(UPLOAD_SUCCESS_CODE, "上传结果："+ result);
-				return;
-			} else {
-				Log.e(TAG, "request error");
-				sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：code=" + res);
-				return;
-			}
-		} catch (MalformedURLException e) {
-			sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
-			e.printStackTrace();
-			return;
-		} catch (IOException e) {
-			sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
-			e.printStackTrace();
-			return;
 		}
+
+		HttpUtils http = new HttpUtils();
+		http.send(HttpRequest.HttpMethod.POST, RequestURL, params,
+				new RequestCallBack<String>() {
+
+					@Override
+					public void onStart() {
+					}
+
+					@Override
+					public void onFailure(HttpException error, String msg) {
+						sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败   msg  "+msg+"  error  "+error);
+					}
+
+					@Override
+					public void onSuccess(ResponseInfo<String> responseInfo) {
+						// TODO Auto-generated method stub
+						int res = responseInfo.statusCode;
+						Log.e(TAG, "response code:" + res);
+						if (res == 200) {
+							String strResult = responseInfo.result;
+							Log.e(TAG, "result : " + strResult);
+							JSONObject jsonObject;
+							try {
+								jsonObject = new JSONObject(strResult);
+								if (jsonObject.getString("code").equals("200")) {
+									Log.e(TAG, "result : " + jsonObject.getString("data"));
+									sendMessage(UPLOAD_SUCCESS_CODE,jsonObject.getString("data"));
+									return;
+								} else {
+									sendMessage(UPLOAD_SERVER_ERROR_CODE,"请上传正确的文件！code="+ jsonObject.getString("code"));
+									return;
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								sendMessage(UPLOAD_SERVER_ERROR_CODE, "JSON  解析失败");
+							}
+							return;
+						} else {
+							Log.e(TAG, "request error");
+							sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：statusCode ="+ res);
+							return;
+						}
+
+					}
+				});
+
 	}
 
 	/**
 	 * 发送上传结果
+	 * 
 	 * @param responseCode
 	 * @param responseMessage
 	 */
-	private void sendMessage(int responseCode,String responseMessage)
-	{
+	private void sendMessage(int responseCode, String responseMessage) {
 		onUploadProcessListener.onUploadDone(responseCode, responseMessage);
 	}
-	
+
 	/**
 	 * 下面是一个自定义的回调函数，用到回调上传文件是否完成
 	 * 
@@ -266,26 +233,31 @@ public class UploadUtil {
 	public static interface OnUploadProcessListener {
 		/**
 		 * 上传响应
+		 * 
 		 * @param responseCode
 		 * @param message
 		 */
 		void onUploadDone(int responseCode, String message);
+
 		/**
 		 * 上传中
+		 * 
 		 * @param uploadSize
 		 */
 		void onUploadProcess(int uploadSize);
+
 		/**
 		 * 准备上传
+		 * 
 		 * @param fileSize
 		 */
 		void initUpload(int fileSize);
 	}
-	private OnUploadProcessListener onUploadProcessListener;
-	
-	
 
-	public void setOnUploadProcessListener(OnUploadProcessListener onUploadProcessListener) {
+	private OnUploadProcessListener onUploadProcessListener;
+
+	public void setOnUploadProcessListener(
+			OnUploadProcessListener onUploadProcessListener) {
 		this.onUploadProcessListener = onUploadProcessListener;
 	}
 
@@ -304,16 +276,18 @@ public class UploadUtil {
 	public void setConnectTimeout(int connectTimeout) {
 		this.connectTimeout = connectTimeout;
 	}
+
 	/**
 	 * 获取上传使用的时间
+	 * 
 	 * @return
 	 */
 	public static int getRequestTime() {
 		return requestTime;
 	}
-	
-	public static interface uploadProcessListener{
-		
+
+	public static interface uploadProcessListener {
+
 	}
-	
+
 }

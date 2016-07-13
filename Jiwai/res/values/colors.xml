@@ -42,6 +42,8 @@
     <color name="red_gray">#E9967A</color>
     <!-- 表单输入项提示hint -->
     <color name="text_hint">#a0b5bf</color>
+    <!-- 链接类文字颜色hint -->
+    <color name="text_light">#FFA589</color>
     <!-- 标题栏红色,主色 -->
     <color name="title">#FC4F53</color>
     <!-- 标题栏浅红色,主色 -->

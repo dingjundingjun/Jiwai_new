@@ -20,13 +20,45 @@ public class PersonalInfoPojo implements Serializable {
     public String grade;
     //	头像保存路径
     public String photoPath;
+    
+    public String token;
     //	收藏的图片
+    
+//    "accountId": 8,
+//    "loginName": "18676275291",
+//    "phone": "18676275291",
+//    "status": 0,
+//    "nickName": "牛牛",
+//    "sex": null,
+//    "grade": null,
+//    "photoPath": null,
+//    "regTime": "2016-07-06T01:59:57.000Z",
+//    "imUser": null,
+//    "imPassword": null,
+//    "introduce": null,
+//    "token": "3082_04463039608e1864c5372ddbbeb9f6cb"
     
     public String getPhone() {
 		return phone;
 	}
     
-    public void setPhone(String phone) {
+    public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -63,8 +95,9 @@ public class PersonalInfoPojo implements Serializable {
 		this.photoPath = photoPath;
 	}
 
+
 	public PersonalInfoPojo(String accountId, String phone, String nickName,
-			String sex, String grade, String photoPath) {
+			String sex, String grade, String photoPath, String token) {
 		super();
 		this.accountId = accountId;
 		this.phone = phone;
@@ -72,6 +105,7 @@ public class PersonalInfoPojo implements Serializable {
 		this.sex = sex;
 		this.grade = grade;
 		this.photoPath = photoPath;
+		this.token = token;
 	}
 
 	@Override

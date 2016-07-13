@@ -40,6 +40,7 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
 	}
 	
 	private void init() {
+//		续签token，失败则跳转回登录界面
         mFragmentManager = this.getSupportFragmentManager();
         mReadBtn = (TabView) findViewById(R.id.btn_read);
         mMeBtn = (TabView) findViewById(R.id.btn_me);

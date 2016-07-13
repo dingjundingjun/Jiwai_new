@@ -8,7 +8,7 @@
         android:layout_width="@dimen/DIMEN_132PX"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/DIMEN_80PX"
+        android:layout_centerVertical="true"
         android:onClick="onClick"
         android:src="@drawable/back_btn" />
 
@@ -16,18 +16,15 @@
         android:id="@+id/activity_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/DIMEN_40PX"
-        android:layout_marginTop="@dimen/DIMEN_36PX"
+        android:layout_centerInParent="true"
         android:text="锁屏画报"
         android:textColor="#464646"
-        android:textSize="@dimen/text_size_48" />
+        android:textSize="@dimen/text_big18_size" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/DIMEN_1PX"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/DIMEN_80PX"
         android:background="#464646" />
 
 </RelativeLayout>

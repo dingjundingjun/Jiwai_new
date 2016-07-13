@@ -12,6 +12,7 @@ import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.guide.fragment.CustomPresentationPagerFragment;
 import com.sounuo.jiwai.utils.ActivityHelper;
 import com.sounuo.jiwai.utils.AppConstant;
+import com.sounuo.jiwai.utils.PersonalUtil;
 import com.sounuo.jiwai.utils.SharedPrefUtil;
 import com.sounuo.jiwai.utils.StorageUtil;
 
@@ -35,6 +36,7 @@ public class GuideActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         isFirstEnter = SharedPrefUtil.getBoolean(this, AppConstant.IS_FIRST_ENTER_APP, true);
         setContentView(R.layout.activity_guide);
     }
@@ -88,9 +90,17 @@ public class GuideActivity extends FragmentActivity {
 
 
     private void enterHome() {
-        ActivityHelper.enterMainActivity(this);
-        finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//    	判断当前是否存在登录信息
+        if (PersonalUtil.getPersonInfo(this)!=null) {
+            ActivityHelper.enterMainActivity(this);
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		}else{
+            ActivityHelper.enterRegisterLogin(this);
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		}
+
     }
 
     @Override

@@ -71,6 +71,19 @@ public class MePicFragment extends Fragment {
 		ImageviewNoPic = (ImageView) inflate.findViewById(R.id.me_pic_collection_no_pic);
 	}
 	
-	
-
+	public void initTestDate() {
+		ArrayList<String> Urls = new ArrayList<String>();
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic2.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic1.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic3.jpg ");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic4.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic5.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic7.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic6.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic8.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic9.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic10.jpg");
+		Urls.add("http://game.sounuo.net/sinaapp/watchworld/update/20151212/pic11.jpg");
+		
+	}
 }

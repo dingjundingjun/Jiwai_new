@@ -10,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,7 +30,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +42,9 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -59,6 +67,7 @@ public class Util {
 	public static String ERROR_RESULT = "0x110";
 	private static final int REQUEST_TIMEOUT = 5 * 1000;// 设置请求超时5秒钟
 	private static final int SO_TIMEOUT = 5 * 1000; // 设置等待数据超时时间5秒钟
+	private static final String TAG = "JIWAI";
 	/**更新聊天信息*/
 	public static int LOAD_USER_INFO_INTERVAL = 3;
 	public static boolean isMain = true;
@@ -69,48 +78,137 @@ public class Util {
         return b;   
     }  
 	
-public static byte[] getImage(String path) throws Exception{  
+	
+	public static String getSign(String mid, String phone, String timestamp){
 		
-		if(TextUtils.isEmpty(path)){
+		String sign = mid + timestamp + "sounuo" + phone;
+
+		sign = MD5.getMD5(sign);
+		
+		return sign;
+	}
+	
+	
+	@TargetApi(Build.VERSION_CODES.CUPCAKE)
+    public static String getMid(Context context) {
+        String deviceId;
+        if (isPhone(context)) {
+            TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            deviceId = telephony.getDeviceId();
+        } else {
+            deviceId = Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID);
+        }
+        return deviceId;
+    }
+	
+	public static boolean isPhone(Context context) {
+        TelephonyManager telephony = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+	
+	public static HashMap<String, String> getAccountHeaders(Context context,String token, String phone) {
+		String mId = getMid(context);
+		long timestamp1 = System.currentTimeMillis();
+		String sign1 = Util.getSign(mId, phone, timestamp1 + "");
+		HashMap<String, String> headers = new HashMap<String, String>();
+		headers.put("token", token);
+		headers.put("timestamp", timestamp1+"");
+		headers.put("mid", mId);
+		headers.put("sign", sign1);
+		return headers;
+	}
+	
+	public static String AccoutRequest(List<NameValuePair> params, String url, HashMap<String, String> headers) {
+		HttpPost httpPost = new HttpPost(url);
+		HttpResponse httpResponse = null;
+		try {
+			/***
+			 * 以下是用于上传headers
+			 */
+			if (headers != null && headers.size() > 0) {
+				Iterator<String> it = headers.keySet().iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					String value = headers.get(key);
+					httpPost.addHeader(key, value);
+				}
+			}
+			// 设置httpPost请求参数
+			if (params!=null) {
+				httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+			}
+			httpResponse = new DefaultHttpClient().execute(httpPost);
+
+			int resultCode = httpResponse.getStatusLine().getStatusCode();
+			Log.d(TAG, "返回码是   " + resultCode);
+			System.out.println("JIWAII  ..   返回码是   " + resultCode);
+			if (resultCode == 200) {
+				/* 读返回数据 */
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				System.out.println("JIWAII  ..   " + strResult);
+				JSONObject jsonObject = new JSONObject(strResult);
+				System.out.println("JIWAII  ..   "+ jsonObject.getString("code"));
+				return jsonObject.getString("code");
+			} else {
+				System.out.println("JIWAII  链接失败.........");
+				Log.d(TAG, "getLockpaperSSLHttpPost resultCode: " + resultCode);
+				return null;
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static byte[] getImage(String path) throws Exception {
+
+		if (TextUtils.isEmpty(path)) {
 			return null;
 		}
-		if(path.equals("null") || path == null)
-		{
+		if (path.equals("null") || path == null) {
 			return null;
 		}
-        URL url = new URL(path); 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-        conn.setConnectTimeout(5 * 1000);  
-        conn.setRequestMethod("GET");  
-        InputStream inStream = conn.getInputStream();  
-        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){  
-            return readStream(inStream);  
-        }  
-        
-        return null;  
-    }  
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5 * 1000);
+		conn.setRequestMethod("GET");
+		InputStream inStream = conn.getInputStream();
+		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			return readStream(inStream);
+		}
+
+		return null;
+	}  
 
 
-public static byte[] readStream(InputStream inStream) throws Exception{  
-    ByteArrayOutputStream outStream = new ByteArrayOutputStream();  
-    byte[] buffer = new byte[1024];  
-    int len = 0;  
-    while( (len=inStream.read(buffer)) != -1){  
-        outStream.write(buffer, 0, len);  
-    }  
-    outStream.close();  
-    inStream.close();  
-    return outStream.toByteArray();  
-}  
-	public static boolean isFileExsit(String path)
-	{
+	public static byte[] readStream(InputStream inStream) throws Exception {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		while ((len = inStream.read(buffer)) != -1) {
+			outStream.write(buffer, 0, len);
+		}
+		outStream.close();
+		inStream.close();
+		return outStream.toByteArray();
+	}
+
+	public static boolean isFileExsit(String path) {
 		File file = new File(path);
-		if(file.exists())
-		{
+		if (file.exists()) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

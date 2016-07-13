@@ -17,6 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.sounuo.jiwai.R;
@@ -222,10 +223,12 @@ public class CircleImageView extends ImageView {
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
     	Debug.d(TAG,"getBitmapFromDrawable()");
         if (drawable == null) {
+        	Log.e(TAG,"  空值  ");
             return null;
         }
 
         if (drawable instanceof BitmapDrawable) {
+        	Log.e(TAG,"  BitmapDrawable  ");
             return ((BitmapDrawable) drawable).getBitmap();
         }
 
@@ -233,9 +236,11 @@ public class CircleImageView extends ImageView {
             Bitmap bitmap;
 
             if (drawable instanceof ColorDrawable) {
+            	Log.e(TAG,"  ColorDrawable  ");
                 bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
             } else {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+            	Log.e(TAG," Not  ColorDrawable  ");
+                bitmap = Bitmap.createBitmap(10, 10, BITMAP_CONFIG);
             }
             
             Canvas canvas = new Canvas(bitmap);

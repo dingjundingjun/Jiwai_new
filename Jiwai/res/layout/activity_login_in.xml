@@ -8,48 +8,30 @@
     android:orientation="vertical"
     tools:context="com.org.great.wrold.activity.RegisterInformActivity" >
 
-    <RelativeLayout
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/DIMEN_218PX" >
-
-        <TextView
-            android:id="@+id/activity_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/DIMEN_40PX"
-            android:layout_marginTop="@dimen/DIMEN_36PX"
-            android:text="新奇吧"
-            android:textColor="@color/title"
-            android:textSize="@dimen/text_size_48" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/DIMEN_2PX"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/DIMEN_80PX"
-            android:background="@color/line_color_gray_light" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/login_slogan"
+    <ImageView
+        android:id="@+id/logo_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_bar"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/text_size_48"
-        android:layout_marginTop="@dimen/DIMEN_180PX"
-        android:text="@string/login_slogan"
-        android:textColor="@color/text_color_gray" />
+        android:layout_marginLeft="@dimen/DIMEN_40PX"
+        android:layout_marginTop="@dimen/DIMEN_140PX"
+        android:src="@drawable/logo"
+        android:textSize="@dimen/text_size_48" />
 
     <RelativeLayout
         android:layout_width="@dimen/DIMEN_860PX"
-        android:layout_height="@dimen/DIMEN_300PX"
-        android:layout_below="@+id/login_slogan"
+        android:layout_height="@dimen/DIMEN_304PX"
+        android:layout_below="@+id/logo_iv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/DIMEN_80PX"
-        android:background="@drawable/regirster_code_false" >
+        android:layout_marginTop="@dimen/DIMEN_40PX" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/DIMEN_10PX"
+            android:layout_marginTop="@dimen/DIMEN_64PX"
+            android:src="@drawable/phone" />
 
         <EditText
             android:id="@+id/login_phone_et"
@@ -61,7 +43,7 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="@string/login_username_hint"
+            android:hint="@string/login_phone_hint"
             android:inputType="number"
             android:maxLength="11"
             android:textColorHint="@color/text_color_gray" />
@@ -70,8 +52,17 @@
             android:id="@+id/rule_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/DIMEN_2PX"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/DIMEN_150PX"
             android:background="@color/line_color_gray_light" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/rule_line"
+            android:layout_marginLeft="@dimen/DIMEN_10PX"
+            android:layout_marginTop="@dimen/DIMEN_64PX"
+            android:src="@drawable/password" />
 
         <EditText
             android:id="@+id/login_password_et"
@@ -89,42 +80,45 @@
             android:maxLength="12"
             android:password="true"
             android:textColorHint="@color/text_color_gray" />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="@dimen/DIMEN_510PX"
-        android:layout_height="@dimen/DIMEN_118PX"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/DIMEN_900PX"
-        android:background="@drawable/jiwai_btn"
-        android:text="登  录"
-        android:textColor="@drawable/text_color_selector" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_login"
-        android:layout_marginLeft="@dimen/DIMEN_110PX"
-        android:layout_marginRight="@dimen/DIMEN_110PX"
-        android:layout_marginTop="@dimen/DIMEN_100PX" >
 
         <TextView
             android:id="@+id/login_forget_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="忘记密码"
-            android:textColor="@color/title_light" />
-
-        <TextView
-            android:id="@+id/login_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="创建账号"
-            android:textColor="@color/title_light" />
+            android:layout_below="@+id/rule_line"
+            android:layout_marginTop="@dimen/DIMEN_44PX"
+            android:text="忘记密码?"
+            android:textColor="#FFA589" />
+
+        <View
+            android:id="@+id/rule_line1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/DIMEN_2PX"
+            android:layout_marginTop="@dimen/DIMEN_300PX"
+            android:background="@color/line_color_gray_light" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="@dimen/DIMEN_780PX"
+        android:layout_height="@dimen/DIMEN_130PX"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_960PX"
+        android:background="@drawable/jiwai_btn"
+        android:textSize="@dimen/DIMEN_74PX"
+        android:text="登      录"
+        android:textColor="@drawable/text_color_selector" />
+
+    <TextView
+        android:id="@+id/login_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_80PX"
+        android:text="创建账号"
+        android:textColor="#FFA589" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -149,7 +143,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/DIMEN_30PX"
             android:layout_marginRight="@dimen/DIMEN_30PX"
-            android:text="你也可以尝试"
+            android:text="您还可以尝试"
             android:textColor="@color/text_color_gray"
             android:textSize="16sp" />
 
@@ -163,10 +157,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_login"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/DIMEN_40PX"
         android:layout_marginLeft="@dimen/DIMEN_110PX"
         android:layout_marginRight="@dimen/DIMEN_110PX"
-        android:layout_marginTop="@dimen/DIMEN_550PX" >
+        android:gravity="center_vertical" >
 
         <Button
             android:id="@+id/login_weixin"
@@ -176,7 +171,7 @@
             android:layout_marginLeft="@dimen/DIMEN_160PX"
             android:background="#00000000"
             android:drawableTop="@drawable/share_qq_friend"
-            android:text="QQ登陆"
+            android:text="QQ"
             android:textColor="@color/text_hint"
             android:textSize="12sp" />
 
@@ -188,7 +183,7 @@
             android:layout_marginRight="@dimen/DIMEN_160PX"
             android:background="#00000000"
             android:drawableTop="@drawable/share_weixin"
-            android:text="微信登陆"
+            android:text="微信"
             android:textColor="@color/text_hint"
             android:textSize="12sp" />
     </RelativeLayout>

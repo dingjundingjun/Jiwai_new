@@ -52,6 +52,7 @@ public class PersonalUtil {
 		prefsEditor.commit();
 	}
 	
+	
 	public static void delPersonInfo(Context context)
 	{
 		SharedPreferences preferences;
@@ -78,6 +79,16 @@ public class PersonalUtil {
 			personnalInfo = JsonTools.GsonToObj(personInfoStr,PersonalInfoPojo.class);
 		}
 		return personnalInfo;
+	}
+	
+	
+	public static String getPersonInfoStr(Context context)
+	{
+		String personInfoStr = null;
+		SharedPreferences preferences;
+		preferences = context.getSharedPreferences("personalinfo", Context.MODE_PRIVATE);
+		personInfoStr = preferences.getString("personalinfo", "");
+		return personInfoStr;
 	}
 	
 

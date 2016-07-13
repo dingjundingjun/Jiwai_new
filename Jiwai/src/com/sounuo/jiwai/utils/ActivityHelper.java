@@ -2,8 +2,11 @@ package com.sounuo.jiwai.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 
-import com.sounuo.jiwai.EditActivity;
+import com.sounuo.jiwai.LoginActivity;
+import com.sounuo.jiwai.SettingActivity;
+import com.sounuo.jiwai.updateUserInfoActivity;
 import com.sounuo.jiwai.MainActivity;
 import com.sounuo.jiwai.MainCatalogActivity;
 import com.sounuo.jiwai.RegisterInformActivity;
@@ -39,9 +42,20 @@ public class ActivityHelper {
         context.startActivity(intent);
     }
     
+    public static void enterRegisterLogin(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
+    
     public static void enterEdit(Context context) {
-    	Intent intent = new Intent(context, EditActivity.class);
+    	Intent intent = new Intent(context, updateUserInfoActivity.class);
     	context.startActivity(intent);
     }
+
+	public static void enterSetting(Context context) {
+		// TODO Auto-generated method stub
+    	Intent intent = new Intent(context, SettingActivity.class);
+    	context.startActivity(intent);
+	}
 
 }

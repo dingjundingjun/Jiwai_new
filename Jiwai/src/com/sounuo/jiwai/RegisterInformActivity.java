@@ -14,7 +14,6 @@ import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,14 +36,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.sounuo.jiwai.data.PersonalInfoPojo;
 import com.sounuo.jiwai.database.ColumnBean;
 import com.sounuo.jiwai.utils.ActivityHelper;
 import com.sounuo.jiwai.utils.AppConstant;
 import com.sounuo.jiwai.utils.Debug;
 import com.sounuo.jiwai.utils.FileUtil;
+import com.sounuo.jiwai.utils.MD5;
+import com.sounuo.jiwai.utils.PersonalUtil;
 import com.sounuo.jiwai.utils.SharedPrefUtil;
 import com.sounuo.jiwai.utils.UploadUtil;
 import com.sounuo.jiwai.utils.UploadUtil.OnUploadProcessListener;
+import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.ChangeColorTextView;
 import com.sounuo.jiwai.views.CircleImageView;
 import com.sounuo.jiwai.views.MyCameraDialog;
@@ -116,13 +121,19 @@ public class RegisterInformActivity extends Activity implements
 
 	private Toast mToast;
 
+	private PersonalInfoPojo personInfo;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_register_inform);
 
-//		personInfo = PersonalUtil.getPersonInfo(this);
+		personInfo = PersonalUtil.getPersonInfo(this);
+		
+		personInfo.getPhotoPath();
+		
+		Log.e("JIWAI"," 查看下保存的PhotoPath   "+personInfo.getPhotoPath());
 
 		// 获取头像保存路径
 		ICON_PATH = pathForTempPhoto(this, "head.png");
@@ -161,6 +172,9 @@ public class RegisterInformActivity extends Activity implements
 		progressDialog = new ProgressDialog(this);
 //		tvNickName.setText(personInfo.nickName);
 		enterEditBaseInfo.setOnClickListener(this);
+		BitmapUtils bitmapUtils = new BitmapUtils(RegisterInformActivity.this);
+		String imageUrl=personInfo.getPhotoPath();
+		bitmapUtils.display(mPhotoView , imageUrl);
 	}
 
 	private void initAdapter(GridView gridView) {
@@ -327,23 +341,24 @@ public class RegisterInformActivity extends Activity implements
     }
     
     public void onPhotoSelected() {
-
-        
 		UploadUtil uploadUtil = UploadUtil.getInstance();
 		uploadUtil.setOnUploadProcessListener(this); // 设置监听器监听上传状态
-		
-//		FileUtil.copyFile(ICON_PATH, ICON_REAL_PATH);
-		mPhotoView.setImageBitmap(BitmapFactory.decodeFile(ICON_PATH));
-
+//		long timestamp=System.currentTimeMillis();
+//		String deviceId=Util.getMid(this);
+//		String sign=deviceId+timestamp+"sounuo"+phone;
+//		System.out.println("JIWAII  ++   MD5 前 " + sign);
+//		sign = MD5.getMD5(sign);
 //		Map<String, String> params = new HashMap<String, String>();
-//		params.put("memberId", ID);
-//		params.put("businessKey", ID);
-//		params.put("businessType", "MemberEntity");
-//		uploadUtil.uploadFile(ICON_PATH, "portrait", AppConstant.PORTRAIT_UPLOAD, params);
-//		progressDialog.setMessage("正在上传文件...");
-//		progressDialog.show();
-//        上传图片
-//		uploadFile(tempFile.getAbsolutePath(), "portrait", URLs.PORTRAIT_UPLOAD, params);
+//		params.put("timestamp", timestamp+"");
+//		params.put("mid", deviceId);
+//		params.put("sign", sign);
+//		params.put("token", PersonalUtil.getPersonInfo(this).token);
+		String token=PersonalUtil.getPersonInfo(this).token;
+		String phone=PersonalUtil.getPersonInfo(this).phone;
+		HashMap<String, String> accountHeaders = Util.getAccountHeaders(this, token, phone);
+		uploadUtil.uploadFile(ICON_PATH, "img", AppConstant.UPLOAD_HEADIMG, accountHeaders);
+		progressDialog.setMessage("正在上传文件...");
+		progressDialog.show();
     }
     
     
@@ -593,20 +608,30 @@ public class RegisterInformActivity extends Activity implements
 				case UploadUtil.UPLOAD_SUCCESS_CODE:
 					// 1.上传成功，则保存上传图片并显示
 					doToast(RegisterInformActivity.this, "头像保存成功",Toast.LENGTH_SHORT);
-					FileUtil.copyFile(ICON_PATH, ICON_REAL_PATH);
-					mPhotoView.setImageBitmap(BitmapFactory.decodeFile(ICON_REAL_PATH));
+					PersonalInfoPojo personInfo = PersonalUtil.getPersonInfo(RegisterInformActivity.this);
+					String imageUrl=(String) msg.obj;
+					personInfo.photoPath=imageUrl;
+					System.out.println("JIWAII  imageUrl  ==  "+imageUrl);
+					PersonalUtil.savePersonInfo(RegisterInformActivity.this, personInfo);
+					BitmapUtils bitmapUtils = new BitmapUtils(RegisterInformActivity.this);
+					bitmapUtils.display(mPhotoView , imageUrl);
+				    BitmapDisplayConfig config = new BitmapDisplayConfig();  
+				    config.setLoadingDrawable(getResources().getDrawable(R.drawable.default_avatar));  
+				    config.setLoadFailedDrawable(getResources().getDrawable(R.drawable.default_avatar));  
+				    bitmapUtils.display(mPhotoView, imageUrl, config);
 					break;
 				case UploadUtil.UPLOAD_FILE_NOT_EXISTS_CODE:
+					doToast(RegisterInformActivity.this, "文件不存在",Toast.LENGTH_SHORT);
+					break;
 				case UploadUtil.UPLOAD_SERVER_ERROR_CODE:
-				default:
-					doToast(RegisterInformActivity.this, "头像上传失败，请重新选择",Toast.LENGTH_SHORT);
+					doToast(RegisterInformActivity.this, (String) msg.obj,Toast.LENGTH_SHORT);
 					break;
 				}
 				//删除预备上传图并显示
-				File file=new File(ICON_PATH);
-				if (file.exists()) {
-					file.delete();
-				}
+//				File file=new File(ICON_PATH);
+//				if (file.exists()) {
+//					file.delete();
+//				}
 				break;
 			default:
 				break;
