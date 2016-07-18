@@ -112,16 +112,18 @@ public class ReadFragment extends Fragment{
 		if(!TEST) {
 		HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
-		http.send(HttpRequest.HttpMethod.GET, Util.READ_CATALOG_CALSSIFY_URL,
+		http.send(HttpRequest.HttpMethod.POST, Util.READ_CATALOG_CALSSIFY_URL,
 		// params,
 				new RequestCallBack<String>() {
 					@Override
 					public void onStart() {
+						Debug.d("onStart = ");
 					}
 
 					@Override
 					public void onLoading(long total, long current,
 							boolean isUploading) {
+						Debug.d("onLoading current = " + current);
 					}
 
 					@Override
@@ -135,7 +137,7 @@ public class ReadFragment extends Fragment{
 		                    if(pojo.getStatus().equals("success"))
 		                    {
 		                        Debug.d("json = " + result);
-		                        ArrayList<ReadTitleData> tempList = pojo.getMessage();
+		                        ArrayList<ReadTitleData> tempList = pojo.getmsg();
 		                        if(tempList != null )
 		                        {
 		                        	mTitleListStr.clear();

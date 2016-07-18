@@ -1,6 +1,12 @@
 package com.sounuo.jiwai.fragments;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,8 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
@@ -195,11 +203,17 @@ public class ReadBaseFragment extends Fragment{
             return;
         }
         Debug.d("mReadTitleData = " + mReadTitleData.getUrl());
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // HH:mm:ss
+        String time = formatter.format(Calendar.getInstance().getTime());
         HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
-		String dataUrl = mReadTitleData.getUrl() + "//1//" + GET_CATALOG_NUM;
-		Debug.d("dataUrl = " + dataUrl);
-		http.send(HttpRequest.HttpMethod.GET, dataUrl,
+		String dataUrl = "http://watchworld2.sounuo.net/article/getOld";//mReadTitleData.getUrl() + "//1//" + GET_CATALOG_NUM;
+		Debug.d("dataUrl = " + dataUrl + " time = " + time + "mReadTitleData.getClassify_id() = " + mReadTitleData.getClassify_id());
+		RequestParams params = new RequestParams();
+		params.addQueryStringParameter("lastTime", time);
+		params.addQueryStringParameter("classifyId", ""+mReadTitleData.getClassify_id());
+		params.addQueryStringParameter("batchCount", ""+2);
+		http.send(HttpRequest.HttpMethod.POST, dataUrl,params,
 				new RequestCallBack<String>() {
 					@Override
 					public void onStart() {
@@ -215,14 +229,23 @@ public class ReadBaseFragment extends Fragment{
 					@Override
 					public void onSuccess(ResponseInfo<String> responseInfo) {
 						String result = responseInfo.result;
-						if(!Util.isEmpty(result))
+						String status = "";
+						Debug.d("result = " + result);
+						try {
+							JSONObject jsono = new JSONObject(result);
+							status = jsono.getString("status");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						
+						if(!Util.isEmpty(result) && status.equals("success"))
 		                {
 		                    Gson gson = new Gson();
 		                    ReadBaseCatalogPojo pojo = gson.fromJson(result, ReadBaseCatalogPojo.class);
 		                    if(pojo.getStatus().equals("success"))
 		                    {
 		                        Debug.d("json = " + result);
-		                        ArrayList<ReadCatalogPojo> tempList = pojo.getMessage();
+		                        ArrayList<ReadCatalogPojo> tempList = pojo.getmsg();
 		                        if(tempList != null )
 		                        {
 		                        	
@@ -233,7 +256,7 @@ public class ReadBaseFragment extends Fragment{
 		                        	}
 		                        	else
 		                        	{
-		                        		mCatalogPojo = pojo.getMessage();
+		                        		mCatalogPojo = pojo.getmsg();
 		                        		Debug.d("mCatalogPojo size =  " + mCatalogPojo.size());
 		                        		mAdapter.setList(mCatalogPojo);
 		                                mAutoListView.setAdapter(mAdapter);
@@ -297,7 +320,7 @@ public class ReadBaseFragment extends Fragment{
 		                    if(pojo.getStatus().equals("success"))
 		                    {
 		                        Debug.d("json = " + result);
-		                        ArrayList<ReadCatalogPojo> tempList = pojo.getMessage();
+		                        ArrayList<ReadCatalogPojo> tempList = pojo.getmsg();
 		                        if(tempList != null )
 		                        {
 		                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
@@ -307,7 +330,7 @@ public class ReadBaseFragment extends Fragment{
 		                        	}
 		                        	else
 		                        	{
-		                        		mCatalogPojo = pojo.getMessage();
+		                        		mCatalogPojo = pojo.getmsg();
 		                                mAdapter.setList(mCatalogPojo);
 		                                mAutoListView.setAdapter(mAdapter);
 		                                mAdapter.notifyDataSetChanged();
@@ -337,10 +360,10 @@ public class ReadBaseFragment extends Fragment{
         if(pojo.getStatus().equals("success"))
         {
 //            Debug.d("json = " + json);
-            ArrayList<ReadCatalogPojo> tempList = pojo.getMessage();
+            ArrayList<ReadCatalogPojo> tempList = pojo.getmsg();
             if(tempList != null )
             {
-        		mCatalogPojo = pojo.getMessage();
+        		mCatalogPojo = pojo.getmsg();
                 mAdapter.setList(mCatalogPojo);
                 mAutoListView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
