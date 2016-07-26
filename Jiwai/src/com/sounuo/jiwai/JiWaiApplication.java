@@ -22,7 +22,6 @@ public class JiWaiApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		
 		 personInfo = PersonalUtil.getPersonInfo(this);
 		// 判断是否需要再重新登录
 		if (personInfo != null) {

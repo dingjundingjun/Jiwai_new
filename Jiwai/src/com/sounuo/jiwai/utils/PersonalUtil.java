@@ -37,7 +37,7 @@ import com.umeng.socialize.controller.listener.SocializeListeners;
 
 public class PersonalUtil {
 	
-	
+	public static SnsAccount mSnsAccount = new SnsAccount(Build.SERIAL,Gender.MALE,"","");
 	public static void savePersonInfo(Context context, PersonalInfoPojo personalInfo)
 	{
 		SharedPreferences preferences;
@@ -91,6 +91,20 @@ public class PersonalUtil {
 		return personInfoStr;
 	}
 	
+	public static void login(Context context,UMSocialService socialService)
+	{
+		socialService.login(context, mSnsAccount, new SocializeListeners.SocializeClientListener() {
+            @Override
+            public void onStart() {
 
+            }
+            @Override
+            public void onComplete(int arg0, SocializeEntity arg1) {
+            }
+        });
+		mSnsAccount.setUserName("haha");
+		mSnsAccount.setUsid(""+System.currentTimeMillis());
+//		mSnsAccount.setAccountIconUrl(pi.getPhotoPath());
+	}
 	
 }

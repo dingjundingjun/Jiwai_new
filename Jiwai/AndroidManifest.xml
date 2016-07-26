@@ -33,6 +33,10 @@
         <activity
             android:name="com.sounuo.jiwai.MainActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.sounuo.jiwai.guide.GuideActivity"
@@ -51,13 +55,12 @@
         <activity
             android:name="com.sounuo.jiwai.RegisterLoginActivity"
             android:label="@string/app_name"
-	    android:screenOrientation="portrait"
+	    	android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
-	                <intent-filter>
+	               <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> -->
         </activity>
         <activity android:name="com.sounuo.jiwai.RegisterActivity"
 	android:screenOrientation="portrait" >

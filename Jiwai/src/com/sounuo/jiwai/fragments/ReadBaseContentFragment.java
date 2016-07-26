@@ -27,6 +27,7 @@ import com.sounuo.jiwai.adapter.CommentAdapter;
 import com.sounuo.jiwai.data.ReadCatalogPojo;
 import com.sounuo.jiwai.dialog.CommentDialog;
 import com.sounuo.jiwai.utils.Debug;
+import com.sounuo.jiwai.utils.PersonalUtil;
 import com.sounuo.jiwai.utils.Util;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.UMComment;
@@ -253,7 +254,7 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
         if (mSocialService == null) {
             Debug.d("getUMSocial name = " + "JJYY_" + mCatalogPojo.getTitle());
             mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
-//            mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
+            PersonalUtil.login(mBaseActivity, mSocialService);
         }
         getCommentFromUM(-1);
         requestLike();
@@ -378,6 +379,7 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
         {
             case R.id.like:
             {
+            	Debug.d("like mSocialService = " + mSocialService);
                 mSocialService.likeChange(mBaseActivity,
                         new SocializeListeners.SocializeClientListener() {
                             @Override

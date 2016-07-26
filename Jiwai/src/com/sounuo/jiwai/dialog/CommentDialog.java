@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.utils.Debug;
+import com.sounuo.jiwai.utils.PersonalUtil;
 import com.umeng.socialize.bean.Gender;
 import com.umeng.socialize.bean.MultiStatus;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -102,8 +103,8 @@ public class CommentDialog extends Dialog implements View.OnClickListener
     private void postComment() {
 
         final UMComment socializeComment = new UMComment();
-//        socializeComment.mUid = PersonalUtil.mSnsAccount.getUsid();
-//        socializeComment.mUname = PersonalUtil.mSnsAccount.getUserName();
+        socializeComment.mUid = PersonalUtil.mSnsAccount.getUsid();
+        socializeComment.mUname = PersonalUtil.mSnsAccount.getUserName();
 //        if(PersonalUtil.mSnsAccount.getAccountIconUrl() != null)
 //        {
 //        	socializeComment.mUserIcon = PersonalUtil.mSnsAccount.getAccountIconUrl();
@@ -121,15 +122,15 @@ public class CommentDialog extends Dialog implements View.OnClickListener
         	mCommentProgress.setMessage(mContext.getString(R.string.comment_sending));
         }
         mCommentProgress.show();
-//        mSocialService.login(mContext, PersonalUtil.mSnsAccount, new SocializeListeners.SocializeClientListener(){
-//            @Override
-//            public void onStart() {
-//            }
-//            @Override
-//            public void onComplete(int arg0, SocializeEntity arg1) {
-//            	comment(socializeComment);
-//            }
-//        } );
+        mSocialService.login(mContext, PersonalUtil.mSnsAccount, new SocializeListeners.SocializeClientListener(){
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(int arg0, SocializeEntity arg1) {
+            	comment(socializeComment);
+            }
+        } );
     }
 
     private void comment(UMComment socializeComment)

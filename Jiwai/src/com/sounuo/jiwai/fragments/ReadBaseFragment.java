@@ -210,9 +210,9 @@ public class ReadBaseFragment extends Fragment{
 		String dataUrl = "http://watchworld2.sounuo.net/article/getOld";//mReadTitleData.getUrl() + "//1//" + GET_CATALOG_NUM;
 		Debug.d("dataUrl = " + dataUrl + " time = " + time + "mReadTitleData.getClassify_id() = " + mReadTitleData.getClassify_id());
 		RequestParams params = new RequestParams();
-		params.addQueryStringParameter("lastTime", time);
-		params.addQueryStringParameter("classifyId", ""+mReadTitleData.getClassify_id());
-		params.addQueryStringParameter("batchCount", ""+2);
+		params.addBodyParameter("lastTime", time);
+		params.addBodyParameter("classifyId", ""+mReadTitleData.getClassify_id());
+		params.addBodyParameter("batchCount", ""+10);
 		http.send(HttpRequest.HttpMethod.POST, dataUrl,params,
 				new RequestCallBack<String>() {
 					@Override
@@ -248,7 +248,6 @@ public class ReadBaseFragment extends Fragment{
 		                        ArrayList<ReadCatalogPojo> tempList = pojo.getmsg();
 		                        if(tempList != null )
 		                        {
-		                        	
 		                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
 		                        	{
 		                        		Debug.d("there is no new news ");
