@@ -91,6 +91,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private boolean mSimulateGridWithList;
 	public static final int DURATION = 300;
 	private JazzyEffect mTransitionEffect = null;
+	private boolean bTransitionEnable = true;
 	public AutoListView(Context context) {
 		super(context);
 		initView(context);
@@ -138,7 +139,9 @@ public class AutoListView extends ListView implements OnScrollListener {
 	// 初始化组�?
 	private void initView(Context context) {
 		mAlreadyAnimatedItems = new HashSet<Integer>();
-		mTransitionEffect = new TiltEffect();
+		if(bTransitionEnable) {
+			mTransitionEffect = new TiltEffect();
+		}
 		// 设置箭头特效
 		animation = new RotateAnimation(0, -180,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
@@ -514,14 +517,14 @@ public class AutoListView extends ListView implements OnScrollListener {
     }
 	
 	private void doJazzinessImpl(View item, int position, int scrollDirection) {
-		if(item == null)
+		if(item == null || bTransitionEnable == false)
 		{
 			return;
 		}
         ViewPropertyAnimator animator = item.animate()
                 .setDuration(DURATION)
                 .setInterpolator(new AccelerateDecelerateInterpolator());
-
+        
         scrollDirection = scrollDirection > 0 ? 1 : -1;
         mTransitionEffect.initView(item, position, scrollDirection);
         mTransitionEffect.setupAnimation(item, position, scrollDirection, animator);
@@ -539,6 +542,10 @@ public class AutoListView extends ListView implements OnScrollListener {
 		{
 			footer.setVisibility(View.GONE);
 		}
+	}
+	
+	public void setTransitionEnable(boolean enable) {
+		bTransitionEnable = enable;
 	}
 
 }

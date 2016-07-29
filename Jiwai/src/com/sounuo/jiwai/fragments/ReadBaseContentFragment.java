@@ -2,9 +2,12 @@ package com.sounuo.jiwai.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.ContextMenu;
@@ -22,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sounuo.jiwai.CommentActivity;
 import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.adapter.CommentAdapter;
 import com.sounuo.jiwai.data.ReadCatalogPojo;
@@ -40,6 +44,7 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,12 +69,14 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
     private TextView mCommentTextView;
 //    private ListView mCommentList;
 //    private CommentAdapter mCommentAdapter;
-    private CommentDialog mCommentDialog;
     private final int MORE_COMMENT_ID = 0;
-    private int mLastCommentExpandNum = 0;
+    private final int MSG_GET_COMMENT_LIKE_COUNT = 0;
     private String mImgurl = "";
     private final UMSocialService mController = UMServiceFactory
             .getUMSocialService(Util.Constants.DESCRIPTOR);
+    /**get the comment count*/
+    private int mCommnetCount;
+    private UpdateHandler mUpdateHandler = new UpdateHandler();
     public ReadBaseContentFragment() {
     }
 
@@ -127,6 +134,7 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
         addWXPlatform();
         initComment();
         loadData();
+        updateComment(0);
     }
 
     /**
@@ -211,40 +219,41 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
     private void getCommentFromUM(long sinceTime)
     {
         mSocialService.getComments(mBaseActivity, new SocializeListeners.FetchCommetsListener() {
+        	
             @Override
             public void onStart() {
             }
 
             @Override
-            public void onComplete(int status, List<UMComment> comments, SocializeEntity arg2) {
-                Debug.d("status111 = " + status);
+            public void onComplete(int status, List<UMComment> comments, SocializeEntity se) {
+            	Debug.d("getCommentFromUM status = " + status);
                 if (status == 200)    //ok
                 {
+                	mCommnetCount = se.getCommentCount();
                     Debug.d("comments size = " + comments.size());
-                    if (!comments.isEmpty()) {
-                        if (comments.size() > 0) {
-                            mComments.addAll(comments);
-                        } else if (comments.size() == 0) {
-//                            mMoreComment.setVisibility(View.GONE);
-                        }
-                        updateComment(mComments);
-                        mLastCommentExpandNum += comments.size();
-                    } else {
-//                        mMoreComment.setVisibility(View.GONE);
-                        Toast.makeText(mBaseActivity, R.string.no_more_comment, Toast.LENGTH_SHORT).show();
-                    }
+                    updateComment(mCommnetCount);
+//                    if (!comments.isEmpty()) {
+//                        if (comments.size() > 0) {
+//                            mComments.addAll(comments);
+//                        } else if (comments.size() == 0) {
+//                        }
+//                        updateComment(mCommnetCount);
+//                        mLastCommentExpandNum += comments.size();
+//                    } else {
+//                        Toast.makeText(mBaseActivity, R.string.no_more_comment, Toast.LENGTH_SHORT).show();
+//                    }
                 } else if (status == -104) {
                     getCommentFromUM(-1);
+                    mCommnetCount = 0;
                 }
             }
         }, sinceTime);
     }
 
-    private void updateComment(List<UMComment> comments)
+    private void updateComment(final int commentCount)
     {
-        Debug.d("udpateComment comments.size = " + comments.size());
-//        mCommentAdapter.setList(comments);
-//        mCommentAdapter.notifyDataSetChanged();
+    	String text = String.format(mBaseActivity.getString(R.string.comment_string), commentCount);
+        mCommentTextView.setText(text);
     }
 
     private void initComment()
@@ -256,8 +265,7 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
             mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
             PersonalUtil.login(mBaseActivity, mSocialService);
         }
-        getCommentFromUM(-1);
-        requestLike();
+        mUpdateHandler.sendEmptyMessageDelayed(MSG_GET_COMMENT_LIKE_COUNT, 1000);
     }
 
     private void initProgressDialog()
@@ -405,14 +413,14 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
             }
             case MORE_COMMENT_ID:
             {
-            	if(mComments != null && mComments.size() > 1)
-            	{
-            		getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
-            	}
-            	else
-            	{
-            		Toast.makeText(mBaseActivity, "没有评论了", Toast.LENGTH_SHORT).show();
-            	}
+//            	if(mComments != null && mComments.size() > 1)
+//            	{
+//            		getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
+//            	}
+//            	else
+//            	{
+//            		Toast.makeText(mBaseActivity, "没有评论了", Toast.LENGTH_SHORT).show();
+//            	}
                 break;
             }
             case R.id.comment:
@@ -425,25 +433,28 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
 
     public void gotoComment()
     {
-        Debug.d("gotoCommentActvitiy");
-        if(mCommentDialog == null)
-        {
-            mCommentDialog = new CommentDialog(mBaseActivity);
-            mCommentDialog.setSocialService(mSocialService);
-            mCommentDialog.setCatalogTitle("JJYY_" + mCatalogPojo.getTitle());
-            mCommentDialog.setCommentListener(new CommentDialog.CommentListener() {
-                @Override
-                public void OnCommentComplete() {
-                	mComments.clear();
-                    getCommentFromUM(-1);
-                }
-            });
-        }
-        else
-        {
-            mCommentDialog.clear();
-        }
-        mCommentDialog.show();
+//        Debug.d("gotoCommentActvitiy");
+//        if(mCommentDialog == null)
+//        {
+//            mCommentDialog = new CommentDialog(mBaseActivity);
+//            mCommentDialog.setSocialService(mSocialService);
+//            mCommentDialog.setCatalogTitle("JJYY_" + mCatalogPojo.getTitle());
+//            mCommentDialog.setCommentListener(new CommentDialog.CommentListener() {
+//                @Override
+//                public void OnCommentComplete() {
+//                	mComments.clear();
+//                    getCommentFromUM(-1);
+//                }
+//            });
+//        }
+//        else
+//        {
+//            mCommentDialog.clear();
+//        }
+//        mCommentDialog.show();
+    	Intent intent = new Intent(mBaseActivity,CommentActivity.class);
+    	intent.putExtra("title", mCatalogPojo.getTitle());
+    	mBaseActivity.startActivity(intent);
     }
 
 	@Override
@@ -482,7 +493,19 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
 			}
 		}
 	}
-
-
-    
+	
+	private class UpdateHandler extends Handler{
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch(msg.what) {
+			case MSG_GET_COMMENT_LIKE_COUNT:
+				getCommentFromUM(-1);
+				requestLike();
+				break;
+			}
+		}
+		
+	}
+	
 }

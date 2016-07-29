@@ -125,9 +125,11 @@ public class CommentDialog extends Dialog implements View.OnClickListener
         mSocialService.login(mContext, PersonalUtil.mSnsAccount, new SocializeListeners.SocializeClientListener(){
             @Override
             public void onStart() {
+            	Debug.d("mSocialService onStart");
             }
             @Override
             public void onComplete(int arg0, SocializeEntity arg1) {
+            	Debug.d("mSocialService onComplete");
             	comment(socializeComment);
             }
         } );
@@ -139,6 +141,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener
                 new SocializeListeners.MulStatusListener() {
                     @Override
                     public void onStart() {
+                    	Debug.d("mSocialService postComment onStart");
                     }
 
                     @Override

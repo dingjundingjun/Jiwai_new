@@ -9,7 +9,7 @@
     <string name="tip_title">温馨提示</string>
     <string name="please_connect_network">请先连接网络!</string>
     <!-- comment -->
-    <string name="comment_string">评论</string>
+    <string name="comment_string">评论(%1$d)</string>
     <string name="comment_dialog_title">评论</string>
     <string name="comment_can_not_null">评论不能为空</string>
     <string name="comment_sending">正在发表评论...</string>

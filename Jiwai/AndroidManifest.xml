@@ -83,6 +83,7 @@
         </activity>
         <activity android:name="com.sounuo.jiwai.EditActivity" >
         </activity>
+        <activity android:name="com.sounuo.jiwai.CommentActivity"/>
     </application>
 
 </manifest>
