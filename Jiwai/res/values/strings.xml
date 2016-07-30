@@ -13,6 +13,9 @@
     <string name="comment_dialog_title">评论</string>
     <string name="comment_can_not_null">评论不能为空</string>
     <string name="comment_sending">正在发表评论...</string>
+    <string name="comment_no_new">这会儿没评论哦！</string>
+    <string name="comment_ok_btn">发表</string>
+    <string name="comment_cancel_btn">取消</string>
     <!-- find content -->
     <string name="i_like">赞</string>
     <string name="share_string">分享</string>

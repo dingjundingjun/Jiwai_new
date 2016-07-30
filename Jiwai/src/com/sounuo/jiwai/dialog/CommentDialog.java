@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.sounuo.jiwai.R;
 import com.sounuo.jiwai.utils.Debug;
 import com.sounuo.jiwai.utils.PersonalUtil;
+import com.sounuo.jiwai.utils.Util;
 import com.umeng.socialize.bean.Gender;
 import com.umeng.socialize.bean.MultiStatus;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -30,6 +31,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener
 {
     private EditText mCommentEdit;
     private Button mCommentBtn;
+    private Button mCommentCancelBtn;
     private CommentListener mCommentlistener;
     private Context mContext;
     private UMSocialService mSocialService;
@@ -38,6 +40,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener
     private String mLognTitle = "";
     public CommentDialog(Context context, int theme) {
         super(context, R.style.comment_dialog_style);
+        mContext = context;
     }
 
     public CommentDialog(Context context) {
@@ -68,6 +71,8 @@ public class CommentDialog extends Dialog implements View.OnClickListener
         this.setTitle(R.string.comment_dialog_title);
         mCommentBtn = (Button)this.findViewById(R.id.comment_btn);
         mCommentBtn.setOnClickListener(this);
+        mCommentCancelBtn =(Button)findViewById(R.id.cancel_btn);
+        mCommentCancelBtn.setOnClickListener(this);
     }
 
     public void clear()
@@ -91,6 +96,10 @@ public class CommentDialog extends Dialog implements View.OnClickListener
                     Toast.makeText(mContext,R.string.comment_can_not_null,Toast.LENGTH_SHORT).show();
                 }
                 break;
+            }
+            case R.id.cancel_btn: {
+            	dismiss();
+            	break;
             }
         }
     }
@@ -151,6 +160,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener
                             Toast.makeText(mContext, "评论成功", Toast.LENGTH_SHORT).show();
                             mCommentlistener.OnCommentComplete();
                             CommentDialog.this.dismiss();
+                            clear();
                         } else {
                             Toast.makeText(mContext, "评论失败", Toast.LENGTH_SHORT).show();
                         }
@@ -162,4 +172,14 @@ public class CommentDialog extends Dialog implements View.OnClickListener
 	public void setCatalogTitle(String string) {
 		mLognTitle = string;
 	}
+
+	@Override
+	public void show() {
+		super.show();
+		Util.showSoftKeyboard(mContext, mCommentEdit);
+	}
+	
+	
+	
+	
 }

@@ -273,14 +273,14 @@ public class AutoListView extends ListView implements OnScrollListener {
 		if (!loadEnable) {
 			return;
 		}
-		Debug.d("isNeedLoad = ");
+		Debug.d("isNeedLoad = scrollState = " + scrollState + " isLoading = " + isLoading + " isLoadFull = " + isLoadFull);
 		try {
 			if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
 					&& !isLoading
 					&& view.getLastVisiblePosition() == view
 							.getPositionForView(footer) && !isLoadFull) {
-				onLoad();
 				isLoading = true;
+				onLoad();
 			}
 		} catch (Exception e) {
 		}
@@ -534,6 +534,12 @@ public class AutoListView extends ListView implements OnScrollListener {
 	public void noLoadDate()
 	{
 		this.removeFooterView(footer);
+	}
+	
+	public void hasLoadDate() {
+		if(getFooterViewsCount() == 0) {
+			this.addFooterView(footer);
+		}
 	}
 	
 	public void hideFooterView()

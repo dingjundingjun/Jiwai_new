@@ -624,6 +624,11 @@ public class Util {
 				InputMethodManager.HIDE_NOT_ALWAYS);
     }
     
+    public static void showSoftKeyboard(Context context,View view) {
+    	InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+    }
+    
     public static void IsEnableAd()
 	{
 		Thread thread = new Thread(new Runnable() {

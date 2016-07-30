@@ -17,8 +17,8 @@
 	
 	
 	<dimen name="loading_text_size">25sp</dimen>
-	<dimen name="commnet_dialog_layout_comment_edit_width">500dip</dimen>
-    <dimen name="commnet_dialog_layout_comment_edit_height">350dip</dimen>
+	<dimen name="commnet_dialog_layout_comment_edit_width">200dip</dimen>
+    <dimen name="commnet_dialog_layout_comment_edit_height">100dip</dimen>
     <dimen name="comment_parent_layout_padding_bottom">10dip</dimen>
     <dimen name="comment_name_textview_margin_left">15dip</dimen>
     <dimen name="comment_content_textview_margin_left">15dip</dimen>

@@ -42,5 +42,7 @@
         <item name="android:layout_gravity">center</item>
     </style>
     
-	<style name="comment_dialog_style" parent="@android:style/Theme.Holo.Light.Dialog"/>
+	<style name="comment_dialog_style" parent="@android:style/Theme.Holo.Light.Dialog">
+	    <item name="android:windowNoTitle">true</item>
+	</style>
 </resources>

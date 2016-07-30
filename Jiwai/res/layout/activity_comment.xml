@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    <LinearLayout 
+        android:id="@+id/comment_click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        >
+        <Button 
+            android:id="@+id/show_comment_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/comment_dialog_title"
+            />
+    </LinearLayout>
     <com.sounuo.jiwai.views.AutoListView
         android:id="@+id/comment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/comment_click"
         />
-</LinearLayout>
+    <TextView 
+        android:id="@+id/no_comments_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_no_new"
+        android:layout_centerInParent="true"
+        />
+</RelativeLayout>
