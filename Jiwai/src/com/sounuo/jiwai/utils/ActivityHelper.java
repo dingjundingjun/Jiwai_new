@@ -28,7 +28,7 @@ public class ActivityHelper {
     }
 
     public static void enterMainActivity(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, MainCatalogActivity.class);
         context.startActivity(intent);
     }
     

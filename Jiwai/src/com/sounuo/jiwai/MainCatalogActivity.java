@@ -9,12 +9,23 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 
+import com.sounuo.jiwai.data.PersonalInfoPojo;
 import com.sounuo.jiwai.fragments.ReadFragment;
 import com.sounuo.jiwai.fragments.MeFragment;
+import com.sounuo.jiwai.utils.Debug;
+import com.sounuo.jiwai.utils.PersonalUtil;
 import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.TabView;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.beans.Source;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.login.LoginListener;
+import com.umeng.simplify.ui.fragments.CommunityMainFragment;
 
 @SuppressLint("NewApi")
 public class MainCatalogActivity extends FragmentActivity implements View.OnClickListener {
@@ -28,10 +39,12 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
     private List<TabView> mTabViewList = new ArrayList<TabView>();
     private FragmentManager mFragmentManager = null;
     private FragmentTransaction mTransaction = null;
+    private CommunityMainFragment mCommunityMainFragment = null;
     private int mFrontFragment = -1;
     private final int READ = 0;
     private final int ME = 1;
     private final int COMMU = 2;
+//    private CommunitySDK mCommSDK;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,8 +66,41 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
         mTabViewList.add(mReadBtn);
         mTabViewList.add(mMeBtn);
         mTabViewList.add(mCommunionBtn);
+//        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getApplicationContext());
+        // 初始化sdk，请传递ApplicationContext
+//        mCommSDK.initSDK(getApplicationContext());        
+        mCommunityMainFragment = new CommunityMainFragment();
+        //设置Feed流页面的返回按钮不可见
+        mCommunityMainFragment.setBackButtonVisibility(View.INVISIBLE);
+        //添加并显示Fragment
         setDefaultFragment();
+        loginCommunity();
+        
     }
+	
+	private void loginCommunity() {
+		CommunitySDK mCommSDK = CommunityFactory.getCommSDK(this);
+	    CommUser user = new CommUser();
+	    PersonalInfoPojo pi = PersonalUtil.getPersonInfo(this);
+	    user.name = pi.nickName;
+	    user.id = pi.getAccountId();
+	    Debug.d("loginCommunity nickName = " + user.name + " id = " + user.id);
+	    mCommSDK.loginToUmengServerBySelfAccount(this, user, new LoginListener() {
+	        @Override
+	        public void onStart() {
+
+	        }
+
+	        @Override
+	        public void onComplete(int stCode, CommUser commUser) {
+	        	Debug.d("loginCommunity stCode = " + stCode);
+	            if (ErrorCode.NO_ERROR==stCode) {
+	                //在此处可以跳转到任何一个你想要的activity
+	            }
+
+	       }
+	    });
+	}
 	
 	private void setDefaultFragment() {
         mFrontFragment = READ;
@@ -79,12 +125,8 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
         }
         else if(mFrontFragment == COMMU)
         {
-//        	if(Util.getLogined(this) == false)
-//        	{
-//        		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
-//        		return;
-//        	}
-//            mCommunionBtn.setSelected(true);
+        	mTransaction.replace(R.id.content, mCommunityMainFragment);
+            mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();
     }
@@ -135,6 +177,12 @@ public class MainCatalogActivity extends FragmentActivity implements View.OnClic
             }
             case R.id.btn_communion:
             {
+            	final CommunitySDK mCommSDK = CommunityFactory.getCommSDK(this);
+            	mCommSDK.openCommunity(MainCatalogActivity.this);
+//            	if(mFrontFragment != COMMU) {
+//            		mFrontFragment = COMMU;
+//            	    changeFragment();
+//            	}
             	break;
             }
         }

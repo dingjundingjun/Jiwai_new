@@ -1,0 +1,11 @@
+###自主修改ui
+如果希望自主修改ui，请使用opensource中的工程，忽略umeng_community_android_sdk_library/ui下的jar，
+opensource目录中umeng_community_android_ui_discuss对应论坛版开源工程，umeng_community_android_ui_weibo对应微博版开源工程，umeng_community_android_ui_simplify对应精简版开源工程,三者只能选其一引用，umeng_community_android_db和umeng_community_android_ui_main两个工程为必选。
+###非自主修改ui
+直接使用umeng_community_android_sdk_library/ui下的jar，weibo（微博版），discuss（论坛版），simplify(精简版)三个jar只能选其一。（必须不能同时引用两个ui jar）
+
+####注意!!!!!
+1.在demo中，使用微博版CommunityMainFragment的import路径是import com.umeng.comm.ui.fragments.CommunityMainFragment，
+使用论坛版import路径是import com.umeng.commm.ui.fragments.CommunityMainFragment;
+2.在AndroidManifest中要选择对应的appid和appsecret。同时注册在AndroidManifest中用不到的activity可删可不删（使用微博版，论坛版注册的activity可以删掉）。
+3.微信登录和qq登录需要使用工程目录下的debug.keystore

@@ -11,7 +11,6 @@ import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.AutoListView;
 import com.sounuo.jiwai.views.AutoListView.OnLoadListener;
 import com.sounuo.jiwai.views.AutoListView.OnRefreshListener;
-import com.umeng.comm.ui.imagepicker.adapters.MBaseAdapter;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.UMComment;
 import com.umeng.socialize.controller.UMServiceFactory;

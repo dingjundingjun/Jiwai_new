@@ -1,7 +1,5 @@
 package com.sounuo.jiwai.views;
 
-import com.activeandroid.util.Log;
-
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
@@ -16,7 +14,6 @@ public class CustomToast {
 	};
 
 	public static void showToast(Context mContext, String text, int duration) {
-		Log.d("JIWAI","showToast "+text);
 		mHandler.removeCallbacks(r);
 		if (mToast != null)
 			mToast.setText(text);

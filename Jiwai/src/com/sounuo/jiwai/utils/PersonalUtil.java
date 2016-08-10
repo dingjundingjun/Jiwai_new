@@ -11,8 +11,6 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.android.agoo.net.async.AsyncHttpClient;
-import org.android.agoo.net.async.AsyncHttpResponseHandler;
 import org.apache.http.Header;
 
 import android.content.Context;
@@ -102,9 +100,10 @@ public class PersonalUtil {
             public void onComplete(int arg0, SocializeEntity arg1) {
             }
         });
-		mSnsAccount.setUserName("haha");
-		mSnsAccount.setUsid(""+System.currentTimeMillis());
-//		mSnsAccount.setAccountIconUrl(pi.getPhotoPath());
+		PersonalInfoPojo pi = getPersonInfo(context);
+		mSnsAccount.setUserName(pi.getNickName());
+		mSnsAccount.setUsid(""+pi.getAccountId());
+		mSnsAccount.setAccountIconUrl(pi.getPhotoPath());
 	}
 	
 }
