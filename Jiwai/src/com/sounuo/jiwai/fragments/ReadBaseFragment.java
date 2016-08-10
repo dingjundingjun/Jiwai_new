@@ -250,6 +250,9 @@ public class ReadBaseFragment extends Fragment{
 		                        {
 		                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
 		                        	{
+		                        		mAdapter.setList(mCatalogPojo);
+		                                mAutoListView.setAdapter(mAdapter);
+		                                mAdapter.notifyDataSetChanged();
 		                        		Debug.d("there is no new news ");
 		                        		Toast.makeText(mBaseActivity, R.string.there_is_no_new_catalog_seeworld, Toast.LENGTH_SHORT).show();
 		                        	}
@@ -325,6 +328,9 @@ public class ReadBaseFragment extends Fragment{
 		                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
 		                        	{
 		                        		Debug.d("there is no new news ");
+		                        		mAdapter.setList(mCatalogPojo);
+		                                mAutoListView.setAdapter(mAdapter);
+		                                mAdapter.notifyDataSetChanged();
 		                        		Toast.makeText(mBaseActivity, R.string.there_is_no_new_catalog_seeworld, Toast.LENGTH_SHORT).show();
 		                        	}
 		                        	else
