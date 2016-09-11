@@ -113,7 +113,8 @@ public class ReadBaseFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 mReloadBtn.setVisibility(View.GONE);
-                getCatalogListFromServer();
+//                getCatalogListFromServer();
+                getCatalogListFromHead();
                 loading();
             }
         });
@@ -138,7 +139,8 @@ public class ReadBaseFragment extends Fragment{
 			
 			@Override
 			public void onRefresh() {
-				getCatalogListFromServer();
+				getCatalogListFromHead();
+//				getCatalogListFromServer();
 			}
 		});
     }

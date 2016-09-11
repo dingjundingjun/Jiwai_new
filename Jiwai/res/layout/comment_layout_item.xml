@@ -43,7 +43,9 @@
         android:layout_width="@dimen/comment_item_avatar_width"
         android:layout_height="@dimen/comment_item_avatar_height"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:scaleType="centerInside"
+        android:layout_marginLeft="@dimen/comment_item_avatar_margin_left"
         />
 
 </RelativeLayout>

@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.sounuo.jiwai.R;
 import com.umeng.socialize.bean.UMComment;
@@ -32,7 +33,8 @@ public class CommentAdapter extends BaseAdapter
     public CommentAdapter(Context context) {
     	mContext = context;
         DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
-        mOptions = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
+//        mOptions = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
+        mOptions = builder.displayer(new RoundedBitmapDisplayer(80)).build();
         mLoader = ImageLoader.getInstance();
         mLoader.init(ImageLoaderConfiguration.createDefault(mContext));
     }
@@ -85,7 +87,10 @@ public class CommentAdapter extends BaseAdapter
         }
         else
         {
-        	viewHolder.avatar.setImageResource(R.drawable.default_avatar);
+        	pUrl = "drawable://" + R.drawable.default_avatar;
+        	mLoader.displayImage(pUrl, viewHolder.avatar, mOptions, new SimpleImageLoadingListener());
+//        	mLoader.displayImage"drawable://" + imageId,
+        	//viewHolder.avatar.setImageResource(R.drawable.default_avatar);
         }
         return convertView;
     }

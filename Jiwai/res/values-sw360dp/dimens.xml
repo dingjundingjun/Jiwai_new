@@ -27,8 +27,9 @@
     <dimen name="comment_name_text_size">18sp</dimen>
     <dimen name="comment_data_text_size">14sp</dimen>
     <dimen name="comment_content_text_size">18sp</dimen>
-    <dimen name="comment_item_avatar_width">50dip</dimen>
-	<dimen name="comment_item_avatar_height">50dip</dimen>
+    <dimen name="comment_item_avatar_width">40dip</dimen>
+	<dimen name="comment_item_avatar_height">40dip</dimen>
+	<dimen name="comment_item_avatar_margin_left">10dp</dimen>
 	
 	<!-- find content layout -->
 	<dimen name="seeworld_layout_comment_text_margin_left">10dip</dimen>
