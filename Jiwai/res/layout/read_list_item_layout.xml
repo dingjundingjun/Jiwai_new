@@ -14,9 +14,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
             android:ellipsize="end"
             android:textSize="@dimen/read_list_item_text_size"
+            android:textColor="#ff0c0c0c"
             />
         <TextView 
             android:id="@+id/catalog_time_text"
@@ -28,16 +28,10 @@
             android:ellipsize="end"
             android:textColor="@color/gray_normal"
             android:textSize="@dimen/read_list_brief_text_size"
+            android:visibility="gone"
             />
     </LinearLayout>
-	<ImageView 
-	    android:id="@+id/catalog_pic"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center"
-	    android:scaleType="centerCrop"
-	    />
-	<TextView 
+    <TextView 
             android:id="@+id/brief"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,4 +40,33 @@
             android:textColor="@color/gray_normal"
             android:textSize="@dimen/read_list_brief_text_size"
             />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        >
+	<ImageView 
+	    android:id="@+id/catalog_pic_left"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:scaleType="centerCrop"
+	    android:layout_weight="1"
+	    />
+	<ImageView 
+	    android:layout_marginLeft="4dp"
+	    android:id="@+id/catalog_pic_center"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:scaleType="centerCrop"
+	    android:layout_weight="1"
+	    />
+	<ImageView 
+	    android:layout_marginLeft="4dp"
+	    android:id="@+id/catalog_pic_right"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:scaleType="centerCrop"
+	    android:layout_weight="1"
+	    />
+	</LinearLayout>
 </LinearLayout>

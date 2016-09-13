@@ -2,8 +2,8 @@
 <resources>
 
     <color name="catalog_bottom_tab_button_bg">#ffd5d5d5</color>
-    <color name="title_scrool_text_color_normal">#ff000000</color>
-    <color name="title_scrool_text_color_press">#ffff0000</color>
+    <color name="title_scrool_text_color_normal">#ff0c0c0c</color>
+    <color name="title_scrool_text_color_press">#fff3455b</color>
 
     <!-- 杏黄色 -->
     <color name="item_select_color">#FC2225</color>
@@ -21,7 +21,7 @@
     <color name="text_color">#d8d8d8</color>
     <color name="text_color1">#4D4E52</color>
     <color name="text_color2">#95989c</color>
-    <color name="gray_normal">#666667</color>
+    <color name="gray_normal">#95aac2</color>
     <color name="app_style_color">#fff25253</color>
     <color name="comment_name_color">#919191</color>
     <color name="comment_content_color">#4e4e4e</color>

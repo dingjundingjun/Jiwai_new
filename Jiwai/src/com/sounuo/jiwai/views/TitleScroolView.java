@@ -74,15 +74,16 @@ public class TitleScroolView extends LinearLayout{
         mTitleViewList.clear();
         int len = mTitleList.size();
         Debug.d("mTitleList.size() = " + mTitleList.size());
-        int textViewMinWidth = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_min_width);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_margin_left);
+//        int textViewMinWidth = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_min_width);
         for(int i = 0; i < len;i++)
         {
-        	
             Debug.d("title = " + mTitleList.get(i) + " textsize = " + mTextSize);
             TextView textView = new TextView(mContext);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
             textView.setText(mTitleList.get(i));
-            textView.setMinWidth(textViewMinWidth);
+//            textView.setMinWidth(textViewMinWidth);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(mColorNormal);
             textView.setId(i);
@@ -98,35 +99,35 @@ public class TitleScroolView extends LinearLayout{
                             TextView tempView = mTitleViewList.get(j);
                             if(tempView.getId() != id)
                             {
-                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
+//                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
                                 tempView.setTextColor(mColorNormal);
-                                if(((Integer)tempView.getTag()) == LABEL_STATUS_PRESS)
-                                {
-                                	Animation am;
-                                	am = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                                    am.setFillAfter(true);
-                                    am.setDuration(ANIM_DURATION);
-                                    tempView.setAnimation(am);
-                                    tempView.setTag(LABEL_STATUS_NORMAL);
-                                }
+//                                if(((Integer)tempView.getTag()) == LABEL_STATUS_PRESS)
+//                                {
+//                                	Animation am;
+//                                	am = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//                                    am.setFillAfter(true);
+//                                    am.setDuration(ANIM_DURATION);
+//                                    tempView.setAnimation(am);
+//                                    tempView.setTag(LABEL_STATUS_NORMAL);
+//                                }
                             }
                             else 
                             {
                                 mOnTitleClickListener.onClick(id);
-                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
+//                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                                 tempView.setTextColor(mColorPress);
-                                Animation am;
-                                am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                                am.setFillAfter(true);
-                                am.setDuration(ANIM_DURATION);
-                                tempView.setAnimation(am);
-                                tempView.setTag(LABEL_STATUS_PRESS);
+//                                Animation am;
+//                                am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//                                am.setFillAfter(true);
+//                                am.setDuration(ANIM_DURATION);
+//                                tempView.setAnimation(am);
+//                                tempView.setTag(LABEL_STATUS_PRESS);
                             }
                         }
                     }
                 }
             });
-            mContentLayout.addView(textView);
+            mContentLayout.addView(textView,params);
             mTitleViewList.add(textView);
         }
     }
@@ -140,23 +141,23 @@ public class TitleScroolView extends LinearLayout{
             for (int j = 0; j < mTitleViewList.size(); j++) {
                 TextView tempView = mTitleViewList.get(j);
                 if (tempView.getId() != id) {
-                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
+//                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
                     tempView.setTextColor(mColorNormal);
-                    if (((Integer) tempView.getTag()) == LABEL_STATUS_PRESS) {
-                        Animation am = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        am.setFillAfter(true);
-                        am.setDuration(ANIM_DURATION);
-                        tempView.setAnimation(am);
-                        tempView.setTag(LABEL_STATUS_NORMAL);
-                    }
+//                    if (((Integer) tempView.getTag()) == LABEL_STATUS_PRESS) {
+//                        Animation am = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//                        am.setFillAfter(true);
+//                        am.setDuration(ANIM_DURATION);
+//                        tempView.setAnimation(am);
+//                        tempView.setTag(LABEL_STATUS_NORMAL);
+//                    }
                 } else {
-                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
+//                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                     tempView.setTextColor(mColorPress);
-                    Animation am = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    am.setFillAfter(true);
-                    am.setDuration(ANIM_DURATION);
-                    tempView.setAnimation(am);
-                    tempView.setTag(LABEL_STATUS_PRESS);
+//                    Animation am = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//                    am.setFillAfter(true);
+//                    am.setDuration(ANIM_DURATION);
+//                    tempView.setAnimation(am);
+//                    tempView.setTag(LABEL_STATUS_PRESS);
                 }
             }
     }
