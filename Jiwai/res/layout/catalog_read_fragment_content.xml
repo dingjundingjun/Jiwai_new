@@ -17,7 +17,9 @@
         android:id="@+id/titlescrool"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:layout_height="@dimen/seeworld_title_height"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         />
     <com.sounuo.jiwai.views.FragmentViewPaper
         android:id="@+id/viewpager"

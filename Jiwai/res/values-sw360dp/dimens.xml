@@ -4,7 +4,7 @@
     <dimen name="title_scrool_label_text_size">15sp</dimen>
     <dimen name="title_scrool_label_text_press_size">20sp</dimen>
     <dimen name="seeworld_title_height">70dp</dimen>
-    <dimen name="title_scrool_label_text_view_height">50dip</dimen>
+    <dimen name="title_scrool_label_text_view_height">46dip</dimen>
     <dimen name="title_scrool_label_text_min_width">90dip</dimen>
     <dimen name="title_scrool_label_text_margin_left">35dp</dimen>
 	

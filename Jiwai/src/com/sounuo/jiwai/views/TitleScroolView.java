@@ -2,6 +2,7 @@ package com.sounuo.jiwai.views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class TitleScroolView extends LinearLayout{
     private LinearLayout mContentLayout;
     private List<String> mTitleList;
     private List<TextView> mTitleViewList = new ArrayList<TextView>();
+    private HorizontalScrollView mScroolView;
     private OnTitleClickListener mOnTitleClickListener;
     private final int ANIM_DURATION = 500;
     private final int LABEL_STATUS_NORMAL = 0;
@@ -34,6 +37,8 @@ public class TitleScroolView extends LinearLayout{
     private float mTextSize;
     private int mColorNormal;
     private int mColorPress;
+    private Handler mHandler =new Handler();
+    private int mScroolX = 0;
     public TitleScroolView(Context context) {
         super(context);
         mContext = context;
@@ -50,6 +55,7 @@ public class TitleScroolView extends LinearLayout{
         mColorNormal = mContext.getResources().getColor(R.color.title_scrool_text_color_normal);
         mColorPress = mContext.getResources().getColor(R.color.title_scrool_text_color_press);
         mParentView = View.inflate(mContext, R.layout.title_scroll_layout, null);
+        mScroolView = (HorizontalScrollView)mParentView.findViewById(R.id.title_scroll_view);
         mContentLayout = (LinearLayout)mParentView.findViewById(R.id.content_layout);
         this.addView(mParentView);
     }
@@ -74,11 +80,11 @@ public class TitleScroolView extends LinearLayout{
         mTitleViewList.clear();
         int len = mTitleList.size();
         Debug.d("mTitleList.size() = " + mTitleList.size());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.leftMargin = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_margin_left);
-//        int textViewMinWidth = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_min_width);
         for(int i = 0; i < len;i++)
         {
+    		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+    				LinearLayout.LayoutParams.WRAP_CONTENT,
+    				LinearLayout.LayoutParams.WRAP_CONTENT);
             Debug.d("title = " + mTitleList.get(i) + " textsize = " + mTextSize);
             TextView textView = new TextView(mContext);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);
@@ -88,6 +94,11 @@ public class TitleScroolView extends LinearLayout{
             textView.setTextColor(mColorNormal);
             textView.setId(i);
             textView.setTag(LABEL_STATUS_NORMAL);
+            if(i != 0) {
+            	params.leftMargin = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_margin_left);
+            } else {
+            	params.leftMargin = 0;
+            }
             textView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,6 +124,16 @@ public class TitleScroolView extends LinearLayout{
                             }
                             else 
                             {
+								Debug.d("textview x = " + tempView.getX()
+										+ " mScroolView.getScrollX() = "
+										+ mScroolView.getScrollX());
+								if (tempView.getX() > mScroolView.getWidth() / 2) {
+									int x = (int)(tempView.getX() - mScroolView.getWidth() / 2);
+									scrollTo(x);
+								}else {
+									scrollTo(0);
+								}
+//                            	scrollTo(mScroolView.get)
                                 mOnTitleClickListener.onClick(id);
 //                                tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                                 tempView.setTextColor(mColorPress);
@@ -153,6 +174,12 @@ public class TitleScroolView extends LinearLayout{
                 } else {
 //                    tempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                     tempView.setTextColor(mColorPress);
+                    if (tempView.getX() > mScroolView.getWidth() / 2) {
+						int x = (int)(tempView.getX() - mScroolView.getWidth() / 2);
+						scrollTo(x);
+					}else {
+						scrollTo(0);
+					}
 //                    Animation am = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 //                    am.setFillAfter(true);
 //                    am.setDuration(ANIM_DURATION);
@@ -161,4 +188,19 @@ public class TitleScroolView extends LinearLayout{
                 }
             }
     }
+    
+    private void scrollTo(int x) {
+    	mScroolX = x;
+    	if(mScroolView != null) {
+    		mHandler.post(runnable);
+    	}
+    }
+    
+    private Runnable runnable = new Runnable(){
+    	public void run() {
+    		mScroolView.smoothScrollTo(mScroolX, 0);
+    	}
+    	};
+
+    	
 }

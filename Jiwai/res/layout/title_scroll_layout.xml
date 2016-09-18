@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<com.sounuo.jiwai.views.ExHorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title_scroll_view"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
     <LinearLayout
         android:id="@+id/content_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:orientation="horizontal"
         android:layout_height="@dimen/title_scrool_label_text_view_height"
-        android:gravity="center">
-        </LinearLayout>
-</HorizontalScrollView>
+        android:gravity="center_vertical"
+        />
+</com.sounuo.jiwai.views.ExHorizontalScrollView>

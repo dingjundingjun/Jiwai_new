@@ -44,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"
+        android:layout_marginTop="15dp"
         >
 	<ImageView 
 	    android:id="@+id/catalog_pic_left"
