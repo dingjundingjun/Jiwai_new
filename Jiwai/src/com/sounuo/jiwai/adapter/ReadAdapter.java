@@ -86,8 +86,8 @@ public class ReadAdapter extends BaseAdapter
         }
         ReadCatalogPojo cp = mCatalogList.get(position);
         viewHolder.catalogText.setText(cp.getTitle());
-        viewHolder.catalogText.setText(testTitleData[position%2]);
-        viewHolder.catalogBrief.setText(testTextData[position%2]);
+//        viewHolder.catalogText.setText(testTitleData[position%2]);
+        viewHolder.catalogBrief.setText(cp.getPreview());
         String time = cp.getCreatetime();
         Debug.d("time = " + time);
         time = time.substring(0, time.indexOf("T"));
@@ -95,10 +95,29 @@ public class ReadAdapter extends BaseAdapter
 //        viewHolder.catalogTime.setVisibility(View.GONE);
         viewHolder.catalogTime.setText(time);
 //        viewHolder.catalogBrief.setText(cp.getBrief());
-        String pUrl = cp.getSnapshots();
+        cp.splitPic(cp.getSnapshots());
+        String pUrl[] = cp.getPicUrl();
 //        viewHolder.catalogPic.getLayoutParams().height = mDisplayWidth/4;
-        if(pUrl != null)
+        viewHolder.catalogPicCenter.setVisibility(View.GONE);
+    	viewHolder.catalogPicRight.setVisibility(View.GONE);
+        if(pUrl != null && pUrl.length > 0)
         {
+        	convertView.findViewById(R.id.catalog_pic_layout).setVisibility(View.VISIBLE);
+        	if(pUrl.length >= 3) {
+        		viewHolder.catalogPicCenter.setVisibility(View.VISIBLE);
+            	viewHolder.catalogPicRight.setVisibility(View.VISIBLE);
+            	mLoader.displayImage(pUrl[0], viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
+            	mLoader.displayImage(pUrl[1], viewHolder.catalogPicCenter, mOptions, new SimpleImageLoadingListener());
+            	mLoader.displayImage(pUrl[2], viewHolder.catalogPicRight, mOptions, new SimpleImageLoadingListener());
+        	} else if(pUrl.length >= 2) {
+        		viewHolder.catalogPicCenter.setVisibility(View.VISIBLE);
+            	mLoader.displayImage(pUrl[0], viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
+            	mLoader.displayImage(pUrl[1], viewHolder.catalogPicCenter, mOptions, new SimpleImageLoadingListener());
+        	} else if(pUrl.length >= 1) {
+        		mLoader.displayImage(pUrl[0], viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
+                viewHolder.catalogPicCenter.setVisibility(View.GONE);
+                viewHolder.catalogPicRight.setVisibility(View.GONE);
+        	} 
 //        	mLoader.displayImage(pUrl, viewHolder.catalogPic, mOptions, new SimpleImageLoadingListener());
         	//先判断本地是否有缓存，有则从缓存加载，没有则从网络加载并且下载
 //        	File file = new File("/mnt/sdcard/叽歪/目录/" + cp.getTitle() + ".jpg");
@@ -115,24 +134,25 @@ public class ReadAdapter extends BaseAdapter
         }
         else
         {
-//        	viewHolder.catalogPic.setVisibility(View.GONE);
+        	convertView.findViewById(R.id.catalog_pic_layout).setVisibility(View.GONE);
         }
-        if(position%3 == 0) {    //3张
-        	viewHolder.catalogPicCenter.setVisibility(View.VISIBLE);
-        	viewHolder.catalogPicRight.setVisibility(View.VISIBLE);
-        	mLoader.displayImage("drawable://" + R.drawable.pic_1, viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
-        	mLoader.displayImage("drawable://" + R.drawable.pic_2, viewHolder.catalogPicCenter, mOptions, new SimpleImageLoadingListener());
-        	mLoader.displayImage("drawable://" + R.drawable.pic_3, viewHolder.catalogPicRight, mOptions, new SimpleImageLoadingListener());
-        } else if(position%3 == 1) {  //2张
-        	viewHolder.catalogPicCenter.setVisibility(View.VISIBLE);
-        	mLoader.displayImage("drawable://" + R.drawable.pic_1, viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
-        	mLoader.displayImage("drawable://" + R.drawable.pic_2, viewHolder.catalogPicCenter, mOptions, new SimpleImageLoadingListener());
-            viewHolder.catalogPicRight.setVisibility(View.GONE);
-        } else if(position%3 == 2) {
-        	mLoader.displayImage("drawable://" + R.drawable.pic_1, viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
-            viewHolder.catalogPicCenter.setVisibility(View.GONE);
-            viewHolder.catalogPicRight.setVisibility(View.GONE);
-        }
+//        if(position%3 == 0) {    //3张
+//        	viewHolder.catalogPicCenter.setVisibility(View.VISIBLE);
+//        	viewHolder.catalogPicRight.setVisibility(View.VISIBLE);
+//        	mLoader.displayImage("drawable://" + R.drawable.pic_1, viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
+//        	mLoader.displayImage("drawable://" + R.drawable.pic_2, viewHolder.catalogPicCenter, mOptions, new SimpleImageLoadingListener());
+//        	mLoader.displayImage("drawable://" + R.drawable.pic_3, viewHolder.catalogPicRight, mOptions, new SimpleImageLoadingListener());
+//        } else if(position%3 == 1) {  //2张
+//        	viewHolder.catalogPicCenter.setVisibility(View.VISIBLE);
+//        	mLoader.displayImage("drawable://" + R.drawable.pic_1, viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
+//        	mLoader.displayImage("drawable://" + R.drawable.pic_2, viewHolder.catalogPicCenter, mOptions, new SimpleImageLoadingListener());
+//            viewHolder.catalogPicRight.setVisibility(View.GONE);
+//        } else if(position%3 == 2) {
+//        	mLoader.displayImage("drawable://" + R.drawable.pic_1, viewHolder.catalogPicLeft, mOptions, new SimpleImageLoadingListener());
+//            viewHolder.catalogPicCenter.setVisibility(View.GONE);
+//            viewHolder.catalogPicRight.setVisibility(View.GONE);
+//        }
+        
         return convertView;
     }
     

@@ -280,7 +280,7 @@ public class ReadBaseContentFragment extends Fragment implements View.OnClickLis
         {
             return;
         }
-        mWebView.loadUrl(mCatalogPojo.getUrl());
+        mWebView.loadUrl(mCatalogPojo.getSrc_url());
         mProgressDialog.show();
     }
 

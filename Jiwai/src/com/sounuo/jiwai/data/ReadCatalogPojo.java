@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
+import com.sounuo.jiwai.utils.Debug;
+
 public class ReadCatalogPojo implements Serializable {
 	/**
 	 * 
@@ -21,7 +23,14 @@ public class ReadCatalogPojo implements Serializable {
 	private String imgs;
 	private String remark;
 	private String age;	
-	
+	private String preview;
+	private String picUrl[];
+	public String getPreview() {
+		return preview;
+	}
+	public void setPreview(String preview) {
+		this.preview = title;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -62,6 +71,8 @@ public class ReadCatalogPojo implements Serializable {
 		return snapshots;
 	}
 	public void setSnapshots(String snapshots) {
+		Debug.d("setSnapshots snapshots");
+		splitPic(snapshots);
 		this.snapshots = snapshots;
 	}
 	public String getCreatetime() {
@@ -90,6 +101,21 @@ public class ReadCatalogPojo implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	
+	public void splitPic(String url) {
+		Debug.d("splitPic url = " + url);
+		if(url != null && !url.equals("")) {
+			picUrl = url.split(";");
+			Debug.d("picUrl length = " + picUrl);
+		}
+	}
+	
+	public String[] getPicUrl() {
+		if(picUrl != null && picUrl.length > 0) {
+			return picUrl;
+		}
+		return null;
 	}
 	
 }
