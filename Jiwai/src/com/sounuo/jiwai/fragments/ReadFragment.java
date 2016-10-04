@@ -147,18 +147,6 @@ public class ReadFragment extends Fragment{
 			                			mFragmentList.add(fragment);
 			                			mTitleListStr.add(fragment.getTitle());
 		                        	}
-		                        	for(int i = 0; i < tempList.size();i++) {
-			                			ReadBaseFragment fragment = new ReadBaseFragment();
-			                			fragment.setReadTitleData(tempList.get(i));
-			                			mFragmentList.add(fragment);
-			                			mTitleListStr.add(fragment.getTitle());
-		                        	}
-		                        	for(int i = 0; i < tempList.size();i++) {
-			                			ReadBaseFragment fragment = new ReadBaseFragment();
-			                			fragment.setReadTitleData(tempList.get(i));
-			                			mFragmentList.add(fragment);
-			                			mTitleListStr.add(fragment.getTitle());
-		                        	}
 		                        	updateFragmentList();
 		                        }
 		                    }

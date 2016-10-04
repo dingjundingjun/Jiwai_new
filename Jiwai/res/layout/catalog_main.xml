@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@color/catalog_bottom_tab_button_bg"
             android:src="@drawable/tab_world_selector"
+            android:visibility="gone"
             android:layout_weight="1"/>
         
         <com.sounuo.jiwai.views.TabView

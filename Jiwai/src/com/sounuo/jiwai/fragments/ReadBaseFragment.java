@@ -37,6 +37,7 @@ import com.sounuo.jiwai.data.ReadTitleData;
 import com.sounuo.jiwai.utils.Debug;
 import com.sounuo.jiwai.utils.Util;
 import com.sounuo.jiwai.views.AutoListView;
+import com.sounuo.jiwai.views.AutoListView.OnLoadListener;
 import com.sounuo.jiwai.views.AutoListView.OnRefreshListener;
 import com.sounuo.jiwai.views.Titanic;
 import com.sounuo.jiwai.views.TitanicTextView;
@@ -57,6 +58,7 @@ public class ReadBaseFragment extends Fragment{
     public RelativeLayout mMainLayout;
     protected String mCatalogUrl;
     public Button mReloadBtn;
+    /**每次下拉刷新获取的数量*/
     private final int GET_CATALOG_NUM = 10;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,6 +145,13 @@ public class ReadBaseFragment extends Fragment{
 //				getCatalogListFromServer();
 			}
 		});
+        
+        mAutoListView.setOnLoadListener(new OnLoadListener() {
+			@Override
+			public void onLoad() {
+				getCatalogListFromFoot();
+			}
+		});
     }
 
     
@@ -180,11 +189,11 @@ public class ReadBaseFragment extends Fragment{
     	for(int j = 0; j < sourceCount; j++) {
     	    ReadCatalogPojo p = sourceList.get(j);
     		for(int i = 0 ; i < srcCount; i++) {
-    		    ReadCatalogPojo srcPojo = sourceList.get(i);
-                if(srcPojo != null && p != null && srcPojo.getTitle() != null && p.getTitle() != null) {
-                	if(srcPojo.getTitle().equals(p.getTitle())) {
+    		    ReadCatalogPojo srcPojo = srcList.get(i);
+                if(srcPojo != null && p != null) {
+                	Debug.d("src article id = " + srcPojo.getArticle_id() + " p = " + p.getArticle_id());
+                	if(srcPojo.getArticle_id() == p.getArticle_id()) {
                 		bAdd = false;
-                		break;
                 	}
                 }
           	}
@@ -199,14 +208,12 @@ public class ReadBaseFragment extends Fragment{
     	return mergeNum;
     }
     
-    private void getCatalogListFromHead() {
+    private void getCatalogListWithTime(String time,final boolean bHead) {
     	if(mReadTitleData == null || mReadTitleData.getUrl().isEmpty())
         {
             return;
         }
         Debug.d("mReadTitleData = " + mReadTitleData.getUrl());
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // HH:mm:ss
-        String time = formatter.format(Calendar.getInstance().getTime());
         HttpUtils http = new HttpUtils();
 		http.configCurrentHttpCacheExpiry(1000 * 10);
 		String dataUrl = "http://watchworld2.sounuo.net/article/getOld";//mReadTitleData.getUrl() + "//1//" + GET_CATALOG_NUM;
@@ -214,7 +221,7 @@ public class ReadBaseFragment extends Fragment{
 		RequestParams params = new RequestParams();
 		params.addBodyParameter("lastTime", time);
 		params.addBodyParameter("classifyId", ""+mReadTitleData.getClassify_id());
-		params.addBodyParameter("batchCount", ""+10);
+		params.addBodyParameter("batchCount", ""+GET_CATALOG_NUM);
 		http.send(HttpRequest.HttpMethod.POST, dataUrl,params,
 				new RequestCallBack<String>() {
 					@Override
@@ -230,6 +237,7 @@ public class ReadBaseFragment extends Fragment{
 
 					@Override
 					public void onSuccess(ResponseInfo<String> responseInfo) {
+						int mergeNum = 0;
 						String result = responseInfo.result;
 						String status = "";
 						Debug.d("result = " + result);
@@ -240,52 +248,95 @@ public class ReadBaseFragment extends Fragment{
 							e.printStackTrace();
 						}
 						
-						if(!Util.isEmpty(result) && status.equals("success"))
-		                {
+						if(!Util.isEmpty(result) && status.equals("success")) {
 		                    Gson gson = new Gson();
 		                    ReadBaseCatalogPojo pojo = gson.fromJson(result, ReadBaseCatalogPojo.class);
-		                    if(pojo.getStatus().equals("success"))
-		                    {
+		                    if(pojo.getStatus().equals("success")) {
 		                        Debug.d("json = " + result);
+		                        Debug.d("bHead ========== " + bHead);
 		                        ArrayList<ReadCatalogPojo> tempList = pojo.getmsg();
-		                        if(tempList != null )
-		                        {
-		                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
-		                        	{
-		                        		mAdapter.setList(mCatalogPojo);
-		                                mAutoListView.setAdapter(mAdapter);
-		                                mAdapter.notifyDataSetChanged();
-		                        		Debug.d("there is no new news ");
-		                        		Toast.makeText(mBaseActivity, R.string.there_is_no_new_catalog_seeworld, Toast.LENGTH_SHORT).show();
+		                        if(mCatalogPojo != null) {
+		                        	if(mCatalogPojo.size() > 0) {
+										if (tempList != null) {
+											if (bHead) {
+												ReadCatalogPojo rcp = tempList.get(0);
+												ReadCatalogPojo rcpTemp = mCatalogPojo.get(0);
+												if (rcp.getCreatetime().equals(rcpTemp.getCreatetime())) {
+													Debug.d("there is no new news ");
+													Toast.makeText(
+															mBaseActivity,
+															R.string.there_is_no_new_catalog_seeworld,
+															Toast.LENGTH_SHORT)
+															.show();
+													loadingComplete();
+												} else {
+													mergeNum = mergeList(
+															mCatalogPojo,
+															tempList);
+													if (mergeNum >= GET_CATALOG_NUM) {
+														mCatalogPojo = pojo
+																.getmsg();
+													}
+												}
+											} else {
+												if(tempList.size() > 0) {
+													Debug.d("bHead ========== 111111111111111");
+													mergeNum = mergeList(mCatalogPojo,tempList);
+												} else {
+													mAutoListView.hideFooterView();
+												}
+											}
+		                        		} else {
+		                        			getCatalogListFailed();
+		                        			return;
+		                        		}
+		                        	} else {
+		                        		mCatalogPojo = tempList;
 		                        	}
-		                        	else
-		                        	{
-		                        		mCatalogPojo = pojo.getmsg();
-		                        		Debug.d("mCatalogPojo size =  " + mCatalogPojo.size());
-		                        		mAdapter.setList(mCatalogPojo);
-		                                mAutoListView.setAdapter(mAdapter);
-		                                mAdapter.notifyDataSetChanged();
-		                        	}
-//		                        	Util.saveFreshTime(mBaseActivity);
-//		                        	saveJson(arg2);
+		                        } else {
+		                        	mCatalogPojo = tempList;
 		                        }
+		                        Debug.d("mCatalogPojo size =  " + mCatalogPojo.size());
+		                        for(int m = 0 ; m < mCatalogPojo.size();m++) {
+		                        	Debug.d("catalog article id = " + mCatalogPojo.get(m).getArticle_id());
+		                        }
+                        		mAdapter.setList(mCatalogPojo);
+                                mAutoListView.setAdapter(mAdapter);
+                                mAdapter.notifyDataSetChanged();
+                                if(!bHead) {
+                                	mAutoListView.setSelection(mCatalogPojo.size() - mergeNum);
+                                }
 		                        loadingComplete();
 		                    }
+		                } else {
+		                	getCatalogListFailed();
 		                }
 					}
-
 					@Override
 					public void onFailure(HttpException error, String msg) {
 						Debug.d("onLoading msg = " + msg);
-						loadingFailed();
-		                mAutoListView.setVisibility(View.GONE);
-		                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+						getCatalogListFailed();
 					}
 				});
     }
     
+    private void getCatalogListFromHead() {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // HH:mm:ss
+        String time = formatter.format(Calendar.getInstance().getTime());
+        getCatalogListWithTime(time,true);
+    }
+    
+    private void getCatalogListFailed() {
+    	loadingFailed();
+        mAutoListView.setVisibility(View.GONE);
+        Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+    }
+    
     private void getCatalogListFromFoot() {
-    	
+    	if(mCatalogPojo != null && mCatalogPojo.size() > 0) {
+    	    ReadCatalogPojo rcp = mCatalogPojo.get(mCatalogPojo.size() - 1);
+    	    getCatalogListWithTime(rcp.getCreatetime(),false);
+    	}
     }
     
     /**
